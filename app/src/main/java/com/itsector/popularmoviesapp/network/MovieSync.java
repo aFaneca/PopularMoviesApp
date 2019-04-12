@@ -90,7 +90,6 @@ public class MovieSync implements Constants {
     /**
      * Converts the string representing the JSON response and extracts the important data
      *
-     * @param context
      * @param jsonResponseStr
      */
     private static List<Movie> getPopularMoviesFromJSon(String jsonResponseStr) {
@@ -106,13 +105,13 @@ public class MovieSync implements Constants {
                 int ID = movieEntry.getInt(API_POPULAR_ID);
                 String originalTitle = movieEntry.getString(API_POPULAR_ORIGINAL_TITLE);
                 String thumbnalImagePath = movieEntry.getString(API_POPULAR_IMG_PATH);
+                String backdropImagePath = movieEntry.getString(API_POPULAR_BACKDROP_PATH);
                 String plotSynopsys = movieEntry.getString(API_POPULAR_PLOT_SYNOPSYS);
                 double voteAverage = movieEntry.getDouble(API_POPULAR_VOTE_AVERAGE);
                 String releaseDate = movieEntry.getString(API_POPULAR_RELEASE_DATE);
-                /*int runtime = movieEntry.getInt(API_POPULAR_RUNTIME);*/
-                int runtime = 120;
+                double popularity = movieEntry.getDouble(API_POPULAR_POPULARITY);
 
-                moviesList.add(new Movie(ID, originalTitle, thumbnalImagePath, plotSynopsys, voteAverage, releaseDate, runtime));
+                moviesList.add(new Movie(ID, originalTitle, thumbnalImagePath, backdropImagePath, plotSynopsys, voteAverage, releaseDate, popularity));
             }
 
         } catch (JSONException e) {

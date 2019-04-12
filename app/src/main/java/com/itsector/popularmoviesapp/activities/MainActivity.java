@@ -70,20 +70,22 @@ public class MainActivity extends AppCompatActivity {
         int movieID = movie.getID();
         String originalTitle = movie.getOriginalTitle();
         int year = movie.getYear();
-        int runtime = movie.getRuntime();
+        double popularity = movie.getPopularity();
         double rating = movie.getVoteAverage();
-        String synopsys = movie.getPlotSynopsys();
+        String synopsys = movie.getPlotSynopsis();
         String imgPath = movie.getImgPath();
+        String backdropPath = movie.getBackdropImgPath();
 
         /* Put all the data into a bundle */
         Bundle args = new Bundle();
         args.putInt(getString(R.string.details_id_key), movieID);
         args.putString(getString(R.string.details_title_key), originalTitle);
         args.putInt(getString(R.string.details_year_key), year);
-        args.putInt(getString(R.string.details_runtime_key), runtime);
+        args.putDouble(getString(R.string.details_popularity_key), popularity);
         args.putDouble(getString(R.string.details_rating_key), rating);
-        args.putString(getString(R.string.details_synopsys_key), synopsys);
+        args.putString(getString(R.string.details_synopsis_key), synopsys);
         args.putString(getString(R.string.details_img_path_key), imgPath);
+        args.putString(getString(R.string.details_backdrop_path_key), backdropPath);
         /* Go to the details activity */
         Intent detailsIntent = new Intent(this, DetailsActivity.class)
                 .putExtra(getString(R.string.details_bundle_key), args);
@@ -95,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         for(int i = 0; i < q; i++){
-            tempMoviesList.add(new Movie(1,"Titulo " + i,  "/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg", "", 2.5, "2015-10-15", 120 ));
+            tempMoviesList.add(new Movie(1,"Titulo " + i,  "/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg", "","", 2.5, "2015-10-15", 120 ));
         }
 
 

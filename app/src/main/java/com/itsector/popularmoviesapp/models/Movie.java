@@ -10,8 +10,6 @@ package com.itsector.popularmoviesapp.models;
 
 import com.itsector.popularmoviesapp.utils.Constants;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -24,19 +22,21 @@ public class Movie implements Constants {
     private int mID;
     private String mOriginalTitle;
     private String mThumbnalImagePath;
-    private String mPlotSynopsys;
+    private String mBackdropImagePath;
+    private String mPlotSynopsis;
     private double mVoteAverage;
     private String mReleaseDate;
-    private int mRuntime;
+    private double mPopularity;
 
-    public Movie(int ID, String mOriginalTitle, String mThumbnalImagePath, String mPlotSynopsys, double mVoteAverage, String releaseDate, int runtime) {
+    public Movie(int ID, String mOriginalTitle, String mThumbnalImagePath, String mBackdropImagePath, String mPlotSynopsis, double mVoteAverage, String releaseDate, double popularity) {
         this.mID = ID;
         this.mOriginalTitle = mOriginalTitle;
         this.mThumbnalImagePath = mThumbnalImagePath;
-        this.mPlotSynopsys = mPlotSynopsys;
+        this.mBackdropImagePath = mBackdropImagePath;
+        this.mPlotSynopsis = mPlotSynopsis;
         this.mVoteAverage = mVoteAverage;
         this.mReleaseDate = releaseDate;
-        this.mRuntime = runtime;
+        this.mPopularity = popularity;
     }
 
 
@@ -48,8 +48,8 @@ public class Movie implements Constants {
         return mOriginalTitle;
     }
 
-    public String getPlotSynopsys() {
-        return mPlotSynopsys;
+    public String getPlotSynopsis() {
+        return mPlotSynopsis;
     }
 
     public double getVoteAverage() {
@@ -64,9 +64,11 @@ public class Movie implements Constants {
         return mThumbnalImagePath;
     }
 
-    public int getRuntime() {
-        return mRuntime;
+    public double getPopularity() {
+        return mPopularity;
     }
+
+    public String getBackdropImgPath() { return mBackdropImagePath; }
 
     /**
      * Converts the releaseDate String into a Date object & extracts the year

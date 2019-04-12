@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">PopularMoviesApp</string>
+    <string name="app_name">Popular Movies</string>
 
     <!-- Details Activity -->
     <string name="details_trailers">Trailers:</string>
     <string name="details_mark_as_favorite">Mark as Favorite</string>
-    <string name="details_runtime">%dmin</string>
+    <string name="details_popularity">%.1f</string>
     <string name="details_rating">%.1f/10</string>
 
 
@@ -14,8 +14,9 @@
     <string name="details_title_key" translatable="false">details_title_key</string>
     <string name="details_id_key" translatable="false">details_id_key</string>
     <string name="details_year_key" translatable="false">details_year_key</string>
-    <string name="details_runtime_key" translatable="false">details_runtime_key</string>
+    <string name="details_popularity_key" translatable="false">details_popularity_key</string>
     <string name="details_rating_key" translatable="false">details_rating_key</string>
-    <string name="details_synopsys_key" translatable="false">details_synopsys_key</string>
+    <string name="details_synopsis_key" translatable="false">details_synopsis_key</string>
     <string name="details_img_path_key" translatable="false">details_img_path_key</string>
+    <string name="details_backdrop_path_key" translatable="false">details_backdrop_path_key</string>
 </resources>

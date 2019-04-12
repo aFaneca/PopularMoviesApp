@@ -20,6 +20,8 @@ tools:context=".activities.DetailsActivity">
 
 <!-- TITLE-->
 <LinearLayout
+    android:id="@+id/details_movie_title_container"
+    tools:background="@drawable/ic_launcher_background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorPrimary"
@@ -32,8 +34,8 @@ tools:context=".activities.DetailsActivity">
         android:id="@+id/details_movie_title_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:textSize="30sp"
+        android:textColor="@android:color/black"
+        android:textSize="50sp"
         tools:text="Movie Name" />
 </LinearLayout>
 
@@ -67,27 +69,39 @@ tools:context=".activities.DetailsActivity">
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/details_top_specs_margin_bottom"
             android:paddingTop="@dimen/details_top_specs_padding_top"
-            tools:text="2015" />
+            android:drawableLeft="@drawable/ic_calendar"
+            android:drawablePadding="@dimen/details_top_specs_padding"
+            android:textSize="@dimen/details_top_specs_text_size"
+            tools:text="2015"
+            />
 
         <TextView
-            android:id="@+id/details_movie_runtime_text_view"
+            android:id="@+id/details_movie_popularity_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/details_top_specs_margin_bottom"
-            tools:text="120min" />
+            tools:text="473.4"
+            android:drawableLeft="@drawable/ic_fire"
+            android:drawablePadding="@dimen/details_top_specs_padding"
+            android:textSize="@dimen/details_top_specs_text_size"
+            />
 
         <TextView
             android:id="@+id/details_movie_rating_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/details_top_specs_margin_bottom"
-            tools:text="8.1/10" />
+            android:drawableLeft="@drawable/ic_star"
+            android:drawablePadding="@dimen/details_top_specs_padding"
+            android:textSize="@dimen/details_top_specs_text_size"
+            tools:text="8.1/10"
+            />
 
         <Button
             android:id="@+id/details_movie_fav_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="@string/details_mark_as_favorite" />
+            android:text="@string/details_mark_as_favorite" />
     </LinearLayout>
 </LinearLayout>
 

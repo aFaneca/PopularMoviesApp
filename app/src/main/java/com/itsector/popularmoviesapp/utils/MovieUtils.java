@@ -33,4 +33,21 @@ public class MovieUtils implements Constants {
 
         return url;
     }
+
+    /**
+     * Returns the full URL to the backdrop image
+     * @param imgPath - path to the img (e.g. '/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg')
+     * @return the URL object
+     */
+    public static URL getBackdropImgURL(String imgPath){
+        URL url = null;
+
+        try {
+            url = new URL(BASE_API_IMG_URL + BASE_API_BACKDROP_SIZE + imgPath);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
 }

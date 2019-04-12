@@ -5,117 +5,121 @@
   ~ mechanism; to sell, license, lease, rent, redistribute or make accessible to any third party,
   ~ whether for profit or without charge.
   -->
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".activities.DetailsActivity">
+    android:layout_height="match_parent">
+
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".activities.DetailsActivity">
 
 
-    <!-- TITLE-->
-    <LinearLayout
-        android:layout_width="match_parent"
+<!-- TITLE-->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:paddingStart="@dimen/details_left_padding"
+    android:paddingLeft="@dimen/details_left_padding"
+    android:paddingTop="50dp"
+    android:paddingBottom="50dp">
+
+    <TextView
+        android:id="@+id/details_movie_title_text_view"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        tools:text="Movie Name" />
+</LinearLayout>
+
+<!-- THUMBNAIL + YEAR + RUNTIME + RATING + FAV BUTTON -->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/details_left_padding"
+    android:paddingLeft="@dimen/details_left_padding"
+    android:paddingTop="10dp"
+    android:paddingBottom="20dp">
+
+    <!-- THUMBNAIL -->
+    <ImageView
+        android:id="@+id/details_movie_thumbnail_image_view"
+        android:layout_width="@dimen/list_item_img_width"
+        android:layout_height="@dimen/list_item_img_height"
+        tools:background="@color/colorAccent" />
+    <!-- YEAR + RUNTIME + RATING + FAV BUTTON -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         android:paddingStart="@dimen/details_left_padding"
-        android:paddingLeft="@dimen/details_left_padding"
-        android:paddingTop="50dp"
-        android:paddingBottom="50dp">
+        android:paddingLeft="@dimen/details_left_padding">
 
         <TextView
-            android:id="@+id/details_movie_title_text_view"
+            android:id="@+id/details_movie_year_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textSize="30sp"
-            tools:text="Movie Name" />
-    </LinearLayout>
-
-    <!-- THUMBNAIL + YEAR + RUNTIME + RATING + FAV BUTTON -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingStart="@dimen/details_left_padding"
-        android:paddingLeft="@dimen/details_left_padding"
-        android:paddingTop="10dp"
-        android:paddingBottom="20dp">
-
-        <!-- THUMBNAIL -->
-        <ImageView
-            android:id="@+id/details_movie_thumbnail_image_view"
-            android:layout_width="@dimen/list_item_img_width"
-            android:layout_height="@dimen/list_item_img_height"
-            tools:background="@color/colorAccent" />
-        <!-- YEAR + RUNTIME + RATING + FAV BUTTON -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingStart="@dimen/details_left_padding"
-            android:paddingLeft="@dimen/details_left_padding">
-
-            <TextView
-                android:id="@+id/details_movie_year_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/details_top_specs_margin_bottom"
-                android:paddingTop="@dimen/details_top_specs_padding_top"
-                tools:text="2015" />
-
-            <TextView
-                android:id="@+id/details_movie_runtime_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/details_top_specs_margin_bottom"
-                tools:text="120min" />
-
-            <TextView
-                android:id="@+id/details_movie_rating_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/details_top_specs_margin_bottom"
-                tools:text="8.1/10" />
-
-            <Button
-                android:id="@+id/details_movie_fav_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="@string/details_mark_as_favorite" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <!-- DESCRIPTION -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/details_left_padding"
-        android:paddingLeft="@dimen/details_left_padding"
-        android:paddingEnd="@dimen/details_right_padding"
-        android:paddingRight="@dimen/details_right_padding">
+            android:layout_marginBottom="@dimen/details_top_specs_margin_bottom"
+            android:paddingTop="@dimen/details_top_specs_padding_top"
+            tools:text="2015" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempor leo eu ante dictum cursus. Etiam quis convallis massa. Praesent posuere gravida eros quis commodo." />
-    </LinearLayout>
-
-    <!-- TRAILERS LIST -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/details_left_padding"
-        android:paddingLeft="@dimen/details_left_padding"
-        android:layout_marginTop="@dimen/details_trailers_margin_top">
-
-        <TextView
+            android:id="@+id/details_movie_runtime_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/details_trailers"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            />
+            android:layout_marginBottom="@dimen/details_top_specs_margin_bottom"
+            tools:text="120min" />
+
+        <TextView
+            android:id="@+id/details_movie_rating_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/details_top_specs_margin_bottom"
+            tools:text="8.1/10" />
+
+        <Button
+            android:id="@+id/details_movie_fav_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="@string/details_mark_as_favorite" />
     </LinearLayout>
 </LinearLayout>
+
+<!-- DESCRIPTION -->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/details_left_padding"
+    android:paddingLeft="@dimen/details_left_padding"
+    android:paddingEnd="@dimen/details_right_padding"
+    android:paddingRight="@dimen/details_right_padding">
+
+    <TextView
+        android:id="@+id/details_movie_plot_synopsys_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempor leo eu ante dictum cursus. Etiam quis convallis massa. Praesent posuere gravida eros quis commodo." />
+</LinearLayout>
+
+<!-- TRAILERS LIST -->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/details_left_padding"
+    android:paddingLeft="@dimen/details_left_padding"
+    android:layout_marginTop="@dimen/details_trailers_margin_top">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/details_trailers"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+</LinearLayout>
+</LinearLayout>
+</ScrollView>

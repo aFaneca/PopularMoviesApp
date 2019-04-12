@@ -1,0 +1,38 @@
+/*
+ * Copyright (c) 2019 ITSector Software. All rights reserved.
+ * ITSector Software Confidential and Proprietary information. It is strictly forbidden for 3rd
+ * parties to modify, decompile, disassemble, defeat, disable or circumvent any protection
+ * mechanism; to sell, license, lease, rent, redistribute or make accessible to any third party,
+ * whether for profit or without charge.
+ */
+
+package com.itsector.popularmoviesapp.network;
+
+import android.os.AsyncTask;
+
+import com.itsector.popularmoviesapp.models.Movie;
+
+import java.util.List;
+
+/**
+ * Created by E936 on 4/12/2019.
+ */
+public class SyncTask extends AsyncTask<Void, Void, List<Movie>> {
+    public AsyncResponse delegate = null;
+
+
+    public SyncTask(AsyncResponse delegate) {
+        this.delegate = delegate;
+    }
+
+    @Override
+    protected List<Movie> doInBackground(Void... voids) {
+
+        return MovieSync.getPopularMovies();
+    }
+
+    @Override
+    protected void onPostExecute(List<Movie> movies) {
+        delegate.onGetMoviesCompleted(movies);
+    }
+}

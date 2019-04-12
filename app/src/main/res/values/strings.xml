@@ -5,7 +5,7 @@
     <string name="details_trailers">Trailers:</string>
     <string name="details_mark_as_favorite">Mark as Favorite</string>
     <string name="details_runtime">%dmin</string>
-    <string name="details_rating">%d/10</string>
+    <string name="details_rating">%.1f/10</string>
 
 
 

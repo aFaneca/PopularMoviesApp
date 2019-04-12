@@ -29,8 +29,9 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView mMovieYear_text_view;
     private TextView mMovieRuntime_text_view;
     private TextView mMovieRating_text_view;
-    private ImageView mMovieThumbnail_image_view;
+    private TextView mDetails_movie_plot_synopsys_text_view;
     private Button mMovieFav_button;
+    private ImageView mMovieThumbnail_image_view;
 
 
     @Override
@@ -43,6 +44,7 @@ public class DetailsActivity extends AppCompatActivity {
         mMovieYear_text_view = (TextView) findViewById(R.id.details_movie_year_text_view);
         mMovieRuntime_text_view = (TextView) findViewById(R.id.details_movie_runtime_text_view);
         mMovieRating_text_view = (TextView) findViewById(R.id.details_movie_rating_text_view);
+        mDetails_movie_plot_synopsys_text_view = (TextView) findViewById(R.id.details_movie_plot_synopsys_text_view);
         mMovieThumbnail_image_view = (ImageView) findViewById(R.id.details_movie_thumbnail_image_view);
         mMovieFav_button = (Button) findViewById(R.id.details_movie_fav_button);
 
@@ -61,7 +63,8 @@ public class DetailsActivity extends AppCompatActivity {
         mMovieTitle_text_view.setText(mReceivedBundle.getString(getString(R.string.details_title_key)));
         mMovieYear_text_view.setText("" + mReceivedBundle.getInt(getString(R.string.details_year_key)));
         mMovieRuntime_text_view.setText(getString(R.string.details_runtime, mReceivedBundle.getInt(getString(R.string.details_runtime_key))));
-        mMovieRating_text_view.setText(getString(R.string.details_rating, mReceivedBundle.getInt(getString(R.string.details_rating_key))));
+        mDetails_movie_plot_synopsys_text_view.setText(mReceivedBundle.getString(getString(R.string.details_synopsys_key)));
+        mMovieRating_text_view.setText(getString(R.string.details_rating, mReceivedBundle.getDouble(getString(R.string.details_rating_key))));
 
         /* Associate image with the imageview */
         ImageLoader.loadImage(url, mMovieThumbnail_image_view);

@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">PopularMoviesApp</string>
+
+    <!-- Details Activity -->
+    <string name="details_trailers">Trailers:</string>
+    <string name="details_mark_as_favorite">Mark as Favorite</string>
+    <string name="details_runtime">%dmin</string>
+    <string name="details_rating">%d/10</string>
+
+
+
+    <!-- Details Activity Bundle Keys -->
+    <string name="details_bundle_key" translatable="false">details_bundle_key</string>
+    <string name="details_title_key" translatable="false">details_title_key</string>
+    <string name="details_id_key" translatable="false">details_id_key</string>
+    <string name="details_year_key" translatable="false">details_year_key</string>
+    <string name="details_runtime_key" translatable="false">details_runtime_key</string>
+    <string name="details_rating_key" translatable="false">details_rating_key</string>
+    <string name="details_synopsys_key" translatable="false">details_synopsys_key</string>
+    <string name="details_img_path_key" translatable="false">details_img_path_key</string>
 </resources>

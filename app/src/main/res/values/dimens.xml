@@ -3,9 +3,20 @@
 
     <!-- Margins -->
     <dimen name="list_item_margin">10dp</dimen>
+    <dimen name="details_top_specs_margin_bottom">10dp</dimen>
+    <dimen name="details_trailers_margin_top">10dp</dimen>
+
+
+    <!-- Paddings -->
+    <dimen name="details_left_padding">20dp</dimen>
+    <dimen name="details_right_padding">20dp</dimen>
+    <dimen name="details_top_specs_padding_top">10dp</dimen>
 
     <!-- ImageViews Widths & Heights -->
     <dimen name="list_item_img_width">185dp</dimen>
     <dimen name="list_item_img_height">277dp</dimen>
+
+
+
 
 </resources>

@@ -18,6 +18,7 @@ import com.itsector.popularmoviesapp.R;
 import com.itsector.popularmoviesapp.models.Movie;
 import com.itsector.popularmoviesapp.network.AsyncResponse;
 import com.itsector.popularmoviesapp.network.SyncTask;
+import com.itsector.popularmoviesapp.utils.MovieUtils;
 import com.itsector.popularmoviesapp.views.adapters.MoviesListAdapter;
 
 import java.util.ArrayList;
@@ -34,19 +35,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SyncTask task = new SyncTask(new AsyncResponse() {
-            @Override
-            public void onGetMoviesCompleted(List<Movie> moviesList) {
-                mMoviesList_recycler_view.swapAdapter(getNewMoviesListAdapter(moviesList), false);
-            }
-        });
-        task.execute();
+        startSyncTask();
 
         mMoviesList_recycler_view = (RecyclerView) findViewById(R.id.movie_list_recycler_view);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, NUMBER_OF_COLUMNS);
         mMoviesList_recycler_view.setLayoutManager(gridLayoutManager);
         mMoviesList_recycler_view.setAdapter(mMoviesListAdapter);
+    }
+
+    private void startSyncTask() {
+        SyncTask task = new SyncTask(new AsyncResponse() {
+            @Override
+            public void onGetMoviesCompleted(List<Movie> moviesList) {
+                moviesList = sortMoviesOrder(moviesList);
+                mMoviesList_recycler_view.swapAdapter(getNewMoviesListAdapter(moviesList), false);
+            }
+        });
+        task.execute();
     }
 
     private RecyclerView.Adapter getNewMoviesListAdapter(List<Movie> dataset) {
@@ -58,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         return mMoviesListAdapter;
+    }
+
+    private List<Movie> sortMoviesOrder(List<Movie> moviesList) {
+        return MovieUtils.sortOrder(this, moviesList);
     }
 
     /**

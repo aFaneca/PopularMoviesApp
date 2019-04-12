@@ -40,6 +40,7 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
         this.listener = listener;
     }
 
+
     /* Create the new views */
     @NonNull
     @Override

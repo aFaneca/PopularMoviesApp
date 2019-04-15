@@ -6,6 +6,7 @@
     <string name="details_trailers">Trailers:</string>
     <string name="details_reviews">Reviews:</string>
     <string name="details_mark_as_favorite">Mark as Favorite</string>
+    <string name="details_unmark_as_favorite">Unmark as Favorite</string>
     <string name="details_popularity">%.1f</string>
     <string name="details_rating">%.1f/10</string>
 

@@ -21,6 +21,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.itsector.popularmoviesapp.R;
+import com.itsector.popularmoviesapp.models.Movie;
+import com.itsector.popularmoviesapp.utils.DBUtils;
+import com.itsector.popularmoviesapp.utils.GetMovieCallback;
 import com.itsector.popularmoviesapp.utils.ImageLoader;
 import com.itsector.popularmoviesapp.utils.MovieUtils;
 import com.squareup.picasso.Picasso;
@@ -40,6 +43,9 @@ public class DetailsActivity extends AppCompatActivity {
     private Button mMovieFav_button;
     private ImageView mMovieThumbnail_image_view;
     private LinearLayout mDetailsMovieTitle_container;
+
+    /* Holds a "cached" version of this value during the lifecycle of this activity, to avoid unnecessary calls to the DB */
+    private Boolean isMarkedAsFavorite;
 
 
     @Override
@@ -65,7 +71,6 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * Bind all of the views with the data received
      */
@@ -81,6 +86,8 @@ public class DetailsActivity extends AppCompatActivity {
         mMoviePopularity_text_view.setText(getString(R.string.details_popularity, mReceivedBundle.getDouble(getString(R.string.details_popularity_key))));
         mDetails_movie_plot_synopsys_text_view.setText(mReceivedBundle.getString(getString(R.string.details_synopsis_key)));
         mMovieRating_text_view.setText(getString(R.string.details_rating, mReceivedBundle.getDouble(getString(R.string.details_rating_key))));
+
+        checkFavoriteStatus();
 
         /* Associate image with the imageview */
         ImageLoader.loadImage(url, mMovieThumbnail_image_view);
@@ -109,8 +116,86 @@ public class DetailsActivity extends AppCompatActivity {
         mMovieFav_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: listener
+                /* A copy of the movie, containing its ID and title (the only params the DB cares about) */
+                final Movie movieCpy = new Movie(mMovieID, mReceivedBundle.getString(getString(R.string.details_title_key)),
+                        mReceivedBundle.getString(getString(R.string.details_backdrop_path_key)));
+
+                /* Check the current status of the movie (starred/unstarred) */
+                if (isMarkedAsFavorite != null) {
+                    /* If this variable is defined, avoid checking the DB */
+                    if (isMarkedAsFavorite) {
+                        /* Remove from the DB */
+                        DBUtils.deleteMovie(getParent(), movieCpy);
+                        styleFavButtonAsUnmarked();
+                        isMarkedAsFavorite = false;
+                    } else {
+                        /* Adds a copy of the movie to the DB */
+                        DBUtils.addMovie(getParent(), movieCpy);
+                        styleFavButtonAsMarked();
+                        isMarkedAsFavorite = true;
+                    }
+                } else {
+                    /* Here we have no choice but to fetch the info directly from the DB (since the 'isMarkedAsFavorite var isn't yet populated  */
+                    /* Check if this movie's ID is present in the DB */
+                    DBUtils.getMovieByID(getParent(), mMovieID, new GetMovieCallback() {
+                        @Override
+                        public void getSingleMovie(Movie movie) {
+                            if (movie != null) {
+                                /* Movie is marked as favorite */
+                                styleFavButtonAsUnmarked();
+                                isMarkedAsFavorite = false;
+
+                                /* Remove from the DB */
+                                DBUtils.deleteMovie(getParent(), movieCpy);
+                            } else {
+                                isMarkedAsFavorite = true;
+
+                                /* Adds a copy of the movie to the DB */
+                                styleFavButtonAsMarked();
+                                DBUtils.addMovie(getParent(), movieCpy);
+                            }
+
+                        }
+                    });
+
+                }
             }
         });
     }
+
+    private void styleFavButtonAsUnmarked() {
+        mMovieFav_button.setText(R.string.details_mark_as_favorite);
+        mMovieFav_button.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+    }
+
+    private void styleFavButtonAsMarked() {
+        mMovieFav_button.setText(R.string.details_unmark_as_favorite);
+        mMovieFav_button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+    }
+
+    /**
+     * Checks if the movie is marked as favorite or not &
+     * reflects that status in the "Mark as favorite" button
+     */
+    private void checkFavoriteStatus() {
+        /* Check if this movie's ID is present in the DB */
+        DBUtils.getMovieByID(this, mMovieID, new GetMovieCallback() {
+            @Override
+            public void getSingleMovie(Movie movie) {
+                if (movie != null) {
+                    /* Movie is marked as favorite */
+                    isMarkedAsFavorite = true;
+                    styleFavButtonAsMarked();
+                } else {
+                    isMarkedAsFavorite = false;
+                    styleFavButtonAsUnmarked();
+                }
+
+            }
+
+
+        });
+    }
+
+
 }

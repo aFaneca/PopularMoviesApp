@@ -43,12 +43,12 @@ public class MainActivity extends AppCompatActivity {
         /* Removes unnecessary shadows below the action bar*/
         getSupportActionBar().setElevation(0f);
 
-        DBUtils.getMovieByID(this, 1, new GetMovieCallback() {
+        /*DBUtils.getMovieByID(this, 1, new GetMovieCallback() {
             @Override
             public void getSingleMovie(Movie movie) {
                 System.out.println("fdas");
             }
-        });
+        });*/
 
         startSyncTask();
 

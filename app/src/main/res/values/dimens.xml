@@ -12,6 +12,7 @@
     <dimen name="details_right_padding">20dp</dimen>
     <dimen name="details_top_specs_padding_top">10dp</dimen>
     <dimen name="details_top_specs_padding">4dp</dimen>
+    <dimen name="details_fav_btn_padding">8dp</dimen>
 
     <!-- ImageViews Widths & Heights -->
     <dimen name="list_item_img_width">185dp</dimen>

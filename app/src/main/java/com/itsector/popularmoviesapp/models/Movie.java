@@ -30,7 +30,6 @@ public class Movie implements Constants {
     @PrimaryKey
     private int mID;
     private String mOriginalTitle;
-    @Ignore
     private String mThumbnalImagePath;
     @Ignore
     private String mBackdropImagePath;
@@ -43,9 +42,10 @@ public class Movie implements Constants {
     @Ignore
     private double mPopularity;
 
-    public Movie(int mID, String mOriginalTitle) {
+    public Movie(int mID, String mOriginalTitle, String mThumbnalImagePath) {
         this.mID = mID;
         this.mOriginalTitle = mOriginalTitle;
+        this.mThumbnalImagePath = mThumbnalImagePath;
     }
 
     public Movie(int ID, String mOriginalTitle, String mThumbnalImagePath, String mBackdropImagePath, String mPlotSynopsis, double mVoteAverage, String releaseDate, double popularity) {
@@ -89,6 +89,14 @@ public class Movie implements Constants {
     }
 
     public String getBackdropImgPath() { return mBackdropImagePath; }
+
+    public String getThumbnalImagePath() {
+        return mThumbnalImagePath;
+    }
+
+    public void setmThumbnalImagePath(String mThumbnalImagePath) {
+        this.mThumbnalImagePath = mThumbnalImagePath;
+    }
 
     /**
      * Converts the releaseDate String into a Date object & extracts the year

@@ -8,6 +8,11 @@ whether for profit or without charge.
 
 package com.itsector.popularmoviesapp.models;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import com.itsector.popularmoviesapp.utils.Constants;
 
 import java.text.ParseException;
@@ -18,15 +23,30 @@ import java.util.Date;
 /**
  * Created by E936 on 4/11/2019.
  */
+
+@Entity
 public class Movie implements Constants {
+    @NonNull
+    @PrimaryKey
     private int mID;
     private String mOriginalTitle;
+    @Ignore
     private String mThumbnalImagePath;
+    @Ignore
     private String mBackdropImagePath;
+    @Ignore
     private String mPlotSynopsis;
+    @Ignore
     private double mVoteAverage;
+    @Ignore
     private String mReleaseDate;
+    @Ignore
     private double mPopularity;
+
+    public Movie(int mID, String mOriginalTitle) {
+        this.mID = mID;
+        this.mOriginalTitle = mOriginalTitle;
+    }
 
     public Movie(int ID, String mOriginalTitle, String mThumbnalImagePath, String mBackdropImagePath, String mPlotSynopsis, double mVoteAverage, String releaseDate, double popularity) {
         this.mID = ID;
@@ -94,5 +114,11 @@ public class Movie implements Constants {
         return mID;
     }
 
+    public void setmID(int mID) {
+        this.mID = mID;
+    }
 
+    public void setmOriginalTitle(String mOriginalTitle) {
+        this.mOriginalTitle = mOriginalTitle;
+    }
 }

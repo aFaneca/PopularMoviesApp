@@ -21,6 +21,7 @@ import com.itsector.popularmoviesapp.R;
 import com.itsector.popularmoviesapp.models.Movie;
 import com.itsector.popularmoviesapp.network.AsyncResponse;
 import com.itsector.popularmoviesapp.network.SyncTask;
+import com.itsector.popularmoviesapp.utils.DBUtils;
 import com.itsector.popularmoviesapp.utils.MovieUtils;
 import com.itsector.popularmoviesapp.views.adapters.MoviesListAdapter;
 
@@ -40,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
 
         /* Removes unnecessary shadows below the action bar*/
         getSupportActionBar().setElevation(0f);
+
+
+        DBUtils.addMovie(this, new Movie(23, "asdfas", "", "", "sinopse", 2.0, "", 100 ));
 
 
         startSyncTask();

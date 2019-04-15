@@ -39,4 +39,7 @@ public interface Constants {
     String SORT_ORDER_POPULARITY_DESC = "pref_sort_order_popularity_key";
     String SORT_ORDER_RATING_DESC = "pref_sort_order_rating_key";
 
+    /* DB */
+    String DB_NAME = "movies_db";
+
 }

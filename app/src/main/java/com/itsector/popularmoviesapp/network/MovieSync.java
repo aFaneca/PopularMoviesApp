@@ -86,6 +86,59 @@ public class MovieSync implements Constants {
         return new ArrayList<Movie>();
     }
 
+    synchronized public static List<Movie> getTopRatedMovies() {
+        HttpURLConnection urlConn = null;
+        BufferedReader reader = null;
+
+        /* Will contain the JSON response */
+        String jsonResponseStr = null;
+
+        URL requestURL = APIUtils.getFullURLforAction(API_ACTIONS.API_GET_TOP_RATED_MOVIES);
+
+        /* Make the request */
+        try {
+            urlConn = (HttpURLConnection) requestURL.openConnection();
+            urlConn.setRequestMethod("GET");
+            urlConn.connect();
+
+            /* Read the input stream into a stream */
+            InputStream inputStream = urlConn.getInputStream();
+            StringBuffer buffer = new StringBuffer();
+            if (inputStream == null) return new ArrayList<Movie>();
+
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+
+            /* While there's still lines to read, append them to the buffer */
+            while ((line = reader.readLine()) != null) {
+                buffer.append(line + "/n");
+            }
+
+            if (buffer.length() == 0) return new ArrayList<Movie>();
+
+            /* Convert buffer into a string */
+            jsonResponseStr = buffer.toString();
+
+            return getPopularMoviesFromJSon(jsonResponseStr);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConn != null) urlConn.disconnect();
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (final IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+        return new ArrayList<Movie>();
+    }
+
 
     /**
      * Converts the string representing the JSON response and extracts the important data

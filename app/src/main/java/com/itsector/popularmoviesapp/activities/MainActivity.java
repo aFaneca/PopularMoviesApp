@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
         *  (It won't make a new API request. It'll only resort the dataset and refresh the view
         * */
         if(mMoviesList != null)
-            updateAdapter(mMoviesList);
+            /*updateAdapter(mMoviesList);*/
+            startSyncTask();
     }
 
     @Override
@@ -87,11 +88,11 @@ public class MainActivity extends AppCompatActivity {
         SyncTask task = new SyncTask(new AsyncResponse() {
             @Override
             public void onGetMoviesCompleted(List<Movie> moviesList) {
-                moviesList = sortMoviesOrder(moviesList);
+                /*moviesList = sortMoviesOrder(moviesList);*/
                 mMoviesList = moviesList;
                 updateAdapter(mMoviesList);
             }
-        });
+        }, this);
         task.execute();
     }
 
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
      * @param updatedDataset
      */
     private void updateAdapter(List<Movie> updatedDataset){
-        mMoviesList = sortMoviesOrder(updatedDataset);
+        /*mMoviesList = sortMoviesOrder(updatedDataset);*/
         mMoviesList_recycler_view.swapAdapter(getNewMoviesListAdapter(mMoviesList), true);
     }
 

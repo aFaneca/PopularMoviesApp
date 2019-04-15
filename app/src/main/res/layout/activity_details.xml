@@ -121,19 +121,27 @@ tools:context=".activities.DetailsActivity">
         tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempor leo eu ante dictum cursus. Etiam quis convallis massa. Praesent posuere gravida eros quis commodo." />
 </LinearLayout>
 
-<!-- TRAILERS LIST -->
+<!-- TRAILERS + REVIEWS LIST -->
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingStart="@dimen/details_left_padding"
     android:paddingLeft="@dimen/details_left_padding"
-    android:layout_marginTop="@dimen/details_trailers_margin_top">
+    android:layout_marginTop="@dimen/details_trailers_margin_top"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/details_trailers"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/details_reviews"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
 </LinearLayout>
 </LinearLayout>
 </ScrollView>

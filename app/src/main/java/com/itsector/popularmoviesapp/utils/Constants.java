@@ -8,6 +8,7 @@ public interface Constants {
     String API_KEY = "b9f27d8d2b4a8722ef2d3ba80e3efa14";
     String BASE_API_URL = "https://api.themoviedb.org/3/movie/";
     String PATH_POPULAR_MOVIES = "popular";
+    String PATH_TOP_RATED_MOVIES = "top_rated";
 
     String BASE_API_IMG_URL = "http://image.tmdb.org/t/p/";
     String BASE_API_IMG_SIZE = "w185";
@@ -28,6 +29,7 @@ public interface Constants {
     /* API Actions */
     enum API_ACTIONS {
         API_GET_POPULAR_MOVIES,
+        API_GET_TOP_RATED_MOVIES
     }
 
 

@@ -70,7 +70,6 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
     }
 
 
-
     public static class MoviesViewHolder extends RecyclerView.ViewHolder {
         public ImageView movieThumbnal_image_view;
         public TextView movieTitle_text_view;
@@ -105,4 +104,6 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
             });
         }
     }
+
+
 }

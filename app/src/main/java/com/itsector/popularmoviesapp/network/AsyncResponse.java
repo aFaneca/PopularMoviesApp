@@ -13,10 +13,7 @@ import com.itsector.popularmoviesapp.models.Movie;
 import java.util.List;
 
 /**
- * This interface allows me to implement a solution that will communicate the responses
- * from async tasks back to an activity.
- *
- * Created by E936 on 4/12/2019.
+ * Created by E936 on 4/15/2019.
  */
 public interface AsyncResponse {
 

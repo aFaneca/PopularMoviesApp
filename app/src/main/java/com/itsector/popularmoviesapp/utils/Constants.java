@@ -32,9 +32,9 @@ public interface Constants {
 
 
     /* SORT ORDER */
-    String SORT_ORDER_PREF_KEY = "SORT_ORDER_PREF_KEY";
-    String SORT_ORDER_DEFAULT = "SORT_ORDER_POPULARITY_DESC";
-    String SORT_ORDER_POPULARITY_DESC = "SORT_ORDER_POPULARITY_DESC";
-    String SORT_ORDER_RATING_DESC = "SORT_ORDER_RATING_DESC";
+    String SORT_ORDER_PREF_KEY = "pref_sort_order_key";
+    String SORT_ORDER_DEFAULT = "pref_sort_order_popularity_key";
+    String SORT_ORDER_POPULARITY_DESC = "pref_sort_order_popularity_key";
+    String SORT_ORDER_RATING_DESC = "pref_sort_order_rating_key";
 
 }

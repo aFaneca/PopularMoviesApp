@@ -2,6 +2,7 @@
     <string name="app_name">Popular Movies</string>
 
     <!-- Details Activity -->
+    <string name="details_label">Movie Details</string>
     <string name="details_trailers">Trailers:</string>
     <string name="details_mark_as_favorite">Mark as Favorite</string>
     <string name="details_popularity">%.1f</string>
@@ -19,4 +20,16 @@
     <string name="details_synopsis_key" translatable="false">details_synopsis_key</string>
     <string name="details_img_path_key" translatable="false">details_img_path_key</string>
     <string name="details_backdrop_path_key" translatable="false">details_backdrop_path_key</string>
+
+    <!-- PreferenceScreen Keys & Labels -->
+    <string name="pref_sort_order_key" translatable="false">pref_sort_order_key</string>
+    <string name="pref_sort_order_label">Sort Order</string>
+    <string name="pref_sort_order_popularity_key" translatable="false">pref_sort_order_popularity_key</string>
+    <string name="pref_sort_order_rating_key" translatable="false">pref_sort_order_rating_key</string>
+    <string name="pref_sort_order_rating_label">Rating</string>
+    <string name="pref_sort_order_popularity_label">Popularity</string>
+
+    <!-- Menu Actions -->
+    <string name="action_settings" translatable="false">Settings</string>
+
 </resources>

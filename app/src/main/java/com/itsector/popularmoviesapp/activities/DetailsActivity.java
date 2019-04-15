@@ -57,8 +57,14 @@ public class DetailsActivity extends AppCompatActivity {
         mMovieFav_button = (Button) findViewById(R.id.details_movie_fav_button);
         mDetailsMovieTitle_container = (LinearLayout) findViewById(R.id.details_movie_title_container);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.details_label);
+
         bindViews();
     }
+
+
 
     /**
      * Bind all of the views with the data received
@@ -91,7 +97,7 @@ public class DetailsActivity extends AppCompatActivity {
 
             @Override
             public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
+                e.printStackTrace();
             }
 
             @Override

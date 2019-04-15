@@ -13,6 +13,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.itsector.popularmoviesapp.R;
 import com.itsector.popularmoviesapp.models.Movie;
@@ -27,13 +30,17 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final int NUMBER_OF_COLUMNS = 2;
     private RecyclerView mMoviesList_recycler_view;
-    private RecyclerView.Adapter mMoviesListAdapter;
+    private MoviesListAdapter mMoviesListAdapter;
     private List<Movie> mMoviesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /* Removes unnecessary shadows below the action bar*/
+        getSupportActionBar().setElevation(0f);
+
 
         startSyncTask();
 
@@ -42,6 +49,38 @@ public class MainActivity extends AppCompatActivity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, NUMBER_OF_COLUMNS);
         mMoviesList_recycler_view.setLayoutManager(gridLayoutManager);
         mMoviesList_recycler_view.setAdapter(mMoviesListAdapter);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        /* Update the dataset in the adapter, in case the sorting settings have changed
+        *  (It won't make a new API request. It'll only resort the dataset and refresh the view
+        * */
+        if(mMoviesList != null)
+            updateAdapter(mMoviesList);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void startSyncTask() {
@@ -49,14 +88,30 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onGetMoviesCompleted(List<Movie> moviesList) {
                 moviesList = sortMoviesOrder(moviesList);
-                mMoviesList_recycler_view.swapAdapter(getNewMoviesListAdapter(moviesList), false);
+                mMoviesList = moviesList;
+                updateAdapter(mMoviesList);
             }
         });
         task.execute();
     }
 
+    /**
+     * Sorts the new dataset provided (updatedDataset) and feeds it to the adapter
+     * @param updatedDataset
+     */
+    private void updateAdapter(List<Movie> updatedDataset){
+        mMoviesList = sortMoviesOrder(updatedDataset);
+        mMoviesList_recycler_view.swapAdapter(getNewMoviesListAdapter(mMoviesList), true);
+    }
+
+    /**
+     * Returns a new instance of the adapter, containing the dataset provided
+     * @param dataset
+     * @return
+     */
     private RecyclerView.Adapter getNewMoviesListAdapter(List<Movie> dataset) {
-        mMoviesListAdapter = new MoviesListAdapter(dataset, new MoviesListAdapter.OnItemClickListener() {
+        mMoviesList = sortMoviesOrder(dataset);
+        mMoviesListAdapter = new MoviesListAdapter(mMoviesList, new MoviesListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Movie movie) {
                 goToDetailsForMovie(movie);
@@ -96,23 +151,10 @@ public class MainActivity extends AppCompatActivity {
         args.putString(getString(R.string.details_synopsis_key), synopsys);
         args.putString(getString(R.string.details_img_path_key), imgPath);
         args.putString(getString(R.string.details_backdrop_path_key), backdropPath);
+
         /* Go to the details activity */
         Intent detailsIntent = new Intent(this, DetailsActivity.class)
                 .putExtra(getString(R.string.details_bundle_key), args);
         startActivity(detailsIntent);
-    }
-
-    private List<Movie> generateDataSet(int q) {
-        List<Movie> tempMoviesList = new ArrayList<>(q);
-
-
-        for(int i = 0; i < q; i++){
-            tempMoviesList.add(new Movie(1,"Titulo " + i,  "/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg", "","", 2.5, "2015-10-15", 120 ));
-        }
-
-
-
-
-        return tempMoviesList;
     }
 }

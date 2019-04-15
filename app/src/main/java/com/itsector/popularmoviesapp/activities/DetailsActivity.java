@@ -118,7 +118,7 @@ public class DetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 /* A copy of the movie, containing its ID and title (the only params the DB cares about) */
                 final Movie movieCpy = new Movie(mMovieID, mReceivedBundle.getString(getString(R.string.details_title_key)),
-                        mReceivedBundle.getString(getString(R.string.details_backdrop_path_key)));
+                        mReceivedBundle.getString(getString(R.string.details_img_path_key)));
 
                 /* Check the current status of the movie (starred/unstarred) */
                 if (isMarkedAsFavorite != null) {
@@ -185,10 +185,26 @@ public class DetailsActivity extends AppCompatActivity {
                 if (movie != null) {
                     /* Movie is marked as favorite */
                     isMarkedAsFavorite = true;
-                    styleFavButtonAsMarked();
+
+                    /* Anything that updates the UI needs to run in the main thread */
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            styleFavButtonAsMarked();
+                        }
+                    });
+
                 } else {
                     isMarkedAsFavorite = false;
-                    styleFavButtonAsUnmarked();
+
+                    /* Anything that updates the UI needs to run in the main thread */
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            styleFavButtonAsUnmarked();
+                        }
+                    });
+
                 }
 
             }

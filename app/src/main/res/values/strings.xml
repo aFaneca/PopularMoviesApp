@@ -28,8 +28,11 @@
     <string name="pref_sort_order_label">Sort Order</string>
     <string name="pref_sort_order_popularity_key" translatable="false">pref_sort_order_popularity_key</string>
     <string name="pref_sort_order_rating_key" translatable="false">pref_sort_order_rating_key</string>
+    <string name="pref_sort_order_favorites_key" translatable="false">pref_sort_order_favorites_key</string>
     <string name="pref_sort_order_rating_label">Rating</string>
     <string name="pref_sort_order_popularity_label">Popularity</string>
+    <string name="pref_sort_order_favorites_label">Favorites</string>
+
 
     <!-- Menu Actions -->
     <string name="action_settings" translatable="false">Settings</string>

@@ -6,9 +6,10 @@ package com.itsector.popularmoviesapp.utils;
 public interface Constants {
     /* API */
     String API_KEY = "b9f27d8d2b4a8722ef2d3ba80e3efa14";
-    String BASE_API_URL = "https://api.themoviedb.org/3/movie/";
-    String PATH_POPULAR_MOVIES = "popular";
-    String PATH_TOP_RATED_MOVIES = "top_rated";
+    String BASE_API_URL = "https://api.themoviedb.org/3/";
+    String PATH_POPULAR_MOVIES = "movie/popular";
+    String PATH_TOP_RATED_MOVIES = "movie/top_rated";
+    String PATH_MOVIE = "movie/";
 
     String BASE_API_IMG_URL = "http://image.tmdb.org/t/p/";
     String BASE_API_IMG_SIZE = "w185";
@@ -29,7 +30,8 @@ public interface Constants {
     /* API Actions */
     enum API_ACTIONS {
         API_GET_POPULAR_MOVIES,
-        API_GET_TOP_RATED_MOVIES
+        API_GET_TOP_RATED_MOVIES,
+        API_GET_MOVIE
     }
 
 
@@ -38,6 +40,7 @@ public interface Constants {
     String SORT_ORDER_DEFAULT = "pref_sort_order_popularity_key";
     String SORT_ORDER_POPULARITY_DESC = "pref_sort_order_popularity_key";
     String SORT_ORDER_RATING_DESC = "pref_sort_order_rating_key";
+    String SORT_ORDER_FAVORITES = "pref_sort_order_favorites_key";
 
     /* DB */
     String DB_NAME = "movies_db";

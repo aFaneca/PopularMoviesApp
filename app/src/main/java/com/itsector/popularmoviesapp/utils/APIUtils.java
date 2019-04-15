@@ -24,12 +24,44 @@ public class APIUtils implements Constants {
                 return buildURLForPopularMovies();
             case API_GET_TOP_RATED_MOVIES:
                 return buildURLForTopRatedMovies();
+            case API_GET_MOVIE:
+                return buildURLForMovie("-1");
             default:
                 return buildURLForPopularMovies();
         }
     }
 
+    public static URL getFullURLforAction(API_ACTIONS action, String param) {
+        switch (action) {
+            case API_GET_POPULAR_MOVIES:
+                return buildURLForPopularMovies();
+            case API_GET_TOP_RATED_MOVIES:
+                return buildURLForTopRatedMovies();
+            case API_GET_MOVIE:
+                return buildURLForMovie(param);
+            default:
+                return buildURLForPopularMovies();
+        }
+    }
+
+
+
     /* Helper Methods */
+
+    /**
+     * Builds and returns the full URL to the API request for a specific method
+     *
+     * @return
+     */
+    private static URL buildURLForMovie(String movieID) {
+        URL fullURL = null;
+        try {
+            fullURL = new URL(BASE_API_URL + PATH_MOVIE + movieID + getQueryParamForAPIKey());
+        } catch (MalformedURLException e1) {
+            e1.printStackTrace();
+        }
+        return fullURL;
+    }
 
     /**
      * Builds and returns the full URL to the API request for top rated movies

@@ -20,7 +20,9 @@ import android.view.MenuItem;
 import com.itsector.popularmoviesapp.R;
 import com.itsector.popularmoviesapp.models.Movie;
 import com.itsector.popularmoviesapp.network.AsyncResponse;
+import com.itsector.popularmoviesapp.network.MovieSync;
 import com.itsector.popularmoviesapp.network.SyncTask;
+import com.itsector.popularmoviesapp.utils.APIUtils;
 import com.itsector.popularmoviesapp.utils.DBUtils;
 import com.itsector.popularmoviesapp.utils.GetMovieCallback;
 import com.itsector.popularmoviesapp.utils.MovieUtils;
@@ -43,13 +45,6 @@ public class MainActivity extends AppCompatActivity {
         /* Removes unnecessary shadows below the action bar*/
         getSupportActionBar().setElevation(0f);
 
-        /*DBUtils.getMovieByID(this, 1, new GetMovieCallback() {
-            @Override
-            public void getSingleMovie(Movie movie) {
-                System.out.println("fdas");
-            }
-        });*/
-
         startSyncTask();
 
         mMoviesList_recycler_view = (RecyclerView) findViewById(R.id.movie_list_recycler_view);
@@ -65,9 +60,9 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         /* Update the dataset in the adapter, in case the sorting settings have changed
-        *  (It won't make a new API request. It'll only resort the dataset and refresh the view
-        * */
-        if(mMoviesList != null)
+         *  (It won't make a new API request. It'll only resort the dataset and refresh the view
+         * */
+        if (mMoviesList != null)
             /*updateAdapter(mMoviesList);*/
             startSyncTask();
     }
@@ -106,15 +101,17 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Sorts the new dataset provided (updatedDataset) and feeds it to the adapter
+     *
      * @param updatedDataset
      */
-    private void updateAdapter(List<Movie> updatedDataset){
+    private void updateAdapter(List<Movie> updatedDataset) {
         /*mMoviesList = sortMoviesOrder(updatedDataset);*/
         mMoviesList_recycler_view.swapAdapter(getNewMoviesListAdapter(mMoviesList), true);
     }
 
     /**
      * Returns a new instance of the adapter, containing the dataset provided
+     *
      * @param dataset
      * @return
      */
@@ -136,19 +133,58 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Redirects to the activity containing the details for this movie
+     *
      * @param movie
      */
     private void goToDetailsForMovie(Movie movie) {
+        /* Knowing that I can't access the 'movie' object from within the inner class below (the runnable),
+        * I declared the below final variable, so that I can interact between the second thread and this method */
+        final List<Movie> movies = new ArrayList<>();
+        movies.add(movie);
 
+        int movieID = -1;
+        String originalTitle = "";
+        int year = -1;
+        double popularity = -1;
+        double rating = -1;
+        String synopsis = "";
+        String imgPath = "";
+        String backdropPath = "";
+
+        /* Checks if we already have all the data we need */
+        if (movie.getBackdropImgPath() == null) {
+            /* If we don't have this field, it means we're dealing with a movie object stored
+             * in a local DB (which only stores an ID, title and path to the thumbnail image),
+             * so we have to fetch the rest of the data directly from the API */
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Movie originalMovie = movies.get(0);
+                    movies.add(MovieSync.getMovie(originalMovie.getID()));
+                }
+            });
+            t.start();
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        /* Now, the movie object we care about will always be the last one added to the movies list */
+        movie = movies.get(movies.size() - 1);
         /* All the info the views needs */
-        int movieID = movie.getID();
-        String originalTitle = movie.getOriginalTitle();
-        int year = movie.getYear();
-        double popularity = movie.getPopularity();
-        double rating = movie.getVoteAverage();
-        String synopsys = movie.getPlotSynopsis();
-        String imgPath = movie.getImgPath();
-        String backdropPath = movie.getBackdropImgPath();
+        movieID = movie.getID();
+        originalTitle = movie.getOriginalTitle();
+        year = movie.getYear();
+        popularity = movie.getPopularity();
+        rating = movie.getVoteAverage();
+        synopsis = movie.getPlotSynopsis();
+        imgPath = movie.getImgPath();
+        backdropPath = movie.getBackdropImgPath();
+
+
 
         /* Put all the data into a bundle */
         Bundle args = new Bundle();
@@ -157,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
         args.putInt(getString(R.string.details_year_key), year);
         args.putDouble(getString(R.string.details_popularity_key), popularity);
         args.putDouble(getString(R.string.details_rating_key), rating);
-        args.putString(getString(R.string.details_synopsis_key), synopsys);
+        args.putString(getString(R.string.details_synopsis_key), synopsis);
         args.putString(getString(R.string.details_img_path_key), imgPath);
         args.putString(getString(R.string.details_backdrop_path_key), backdropPath);
 

@@ -10,13 +10,11 @@ package com.itsector.popularmoviesapp.utils;
 
 import com.itsector.popularmoviesapp.models.Movie;
 
+import java.util.List;
 
 /**
  * Created by E936 on 4/15/2019.
  */
-public interface GetMovieCallback {
-
-    public void getSingleMovie(Movie movie);
-
-
+public interface GetAllMoviesCallback {
+    public void getAllMovies(List<Movie> movies);
 }

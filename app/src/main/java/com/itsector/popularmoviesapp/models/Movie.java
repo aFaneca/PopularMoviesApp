@@ -30,7 +30,7 @@ public class Movie implements Constants {
     @PrimaryKey
     private int mID;
     private String mOriginalTitle;
-    private String mThumbnalImagePath;
+    private String mThumbnailImagePath;
     @Ignore
     private String mBackdropImagePath;
     @Ignore
@@ -42,16 +42,16 @@ public class Movie implements Constants {
     @Ignore
     private double mPopularity;
 
-    public Movie(int mID, String mOriginalTitle, String mThumbnalImagePath) {
+    public Movie(int mID, String mOriginalTitle, String mThumbnailImagePath) {
         this.mID = mID;
         this.mOriginalTitle = mOriginalTitle;
-        this.mThumbnalImagePath = mThumbnalImagePath;
+        this.mThumbnailImagePath = mThumbnailImagePath;
     }
 
-    public Movie(int ID, String mOriginalTitle, String mThumbnalImagePath, String mBackdropImagePath, String mPlotSynopsis, double mVoteAverage, String releaseDate, double popularity) {
+    public Movie(int ID, String mOriginalTitle, String mThumbnailImagePath, String mBackdropImagePath, String mPlotSynopsis, double mVoteAverage, String releaseDate, double popularity) {
         this.mID = ID;
         this.mOriginalTitle = mOriginalTitle;
-        this.mThumbnalImagePath = mThumbnalImagePath;
+        this.mThumbnailImagePath = mThumbnailImagePath;
         this.mBackdropImagePath = mBackdropImagePath;
         this.mPlotSynopsis = mPlotSynopsis;
         this.mVoteAverage = mVoteAverage;
@@ -81,7 +81,7 @@ public class Movie implements Constants {
     }
 
     public String getImgPath() {
-        return mThumbnalImagePath;
+        return mThumbnailImagePath;
     }
 
     public double getPopularity() {
@@ -90,12 +90,12 @@ public class Movie implements Constants {
 
     public String getBackdropImgPath() { return mBackdropImagePath; }
 
-    public String getThumbnalImagePath() {
-        return mThumbnalImagePath;
+    public String getThumbnailImagePath() {
+        return mThumbnailImagePath;
     }
 
     public void setmThumbnalImagePath(String mThumbnalImagePath) {
-        this.mThumbnalImagePath = mThumbnalImagePath;
+        this.mThumbnailImagePath = mThumbnalImagePath;
     }
 
     /**

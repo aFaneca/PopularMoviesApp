@@ -8,6 +8,8 @@
 
 package com.itsector.popularmoviesapp.utils;
 
+import android.arch.lifecycle.LiveData;
+
 import com.itsector.popularmoviesapp.models.Movie;
 
 import java.util.List;
@@ -16,5 +18,5 @@ import java.util.List;
  * Created by E936 on 4/15/2019.
  */
 public interface GetAllMoviesCallback {
-    public void getAllMovies(List<Movie> movies);
+    public void getAllMovies(LiveData<List<Movie>> movies);
 }

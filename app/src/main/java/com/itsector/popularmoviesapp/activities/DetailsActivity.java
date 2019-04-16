@@ -8,6 +8,7 @@
 
 package com.itsector.popularmoviesapp.activities;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -26,6 +27,7 @@ import com.itsector.popularmoviesapp.utils.DBUtils;
 import com.itsector.popularmoviesapp.utils.GetMovieCallback;
 import com.itsector.popularmoviesapp.utils.ImageLoader;
 import com.itsector.popularmoviesapp.utils.MovieUtils;
+import com.itsector.popularmoviesapp.utils.MoviesListViewModel;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -46,12 +48,14 @@ public class DetailsActivity extends AppCompatActivity {
 
     /* Holds a "cached" version of this value during the lifecycle of this activity, to avoid unnecessary calls to the DB */
     private Boolean isMarkedAsFavorite;
-
+    MoviesListViewModel moviesListViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
+        moviesListViewModel = ViewModelProviders.of(this).get(MoviesListViewModel.class);
 
         /* Initialize all views */
         mMovieTitle_text_view = (TextView) findViewById(R.id.details_movie_title_text_view);
@@ -125,19 +129,21 @@ public class DetailsActivity extends AppCompatActivity {
                     /* If this variable is defined, avoid checking the DB */
                     if (isMarkedAsFavorite) {
                         /* Remove from the DB */
-                        DBUtils.deleteMovie(getParent(), movieCpy);
+                        moviesListViewModel.deleteMovie(getParent(), movieCpy);
+                        /*DBUtils.deleteMovie(getParent(), movieCpy);*/
                         styleFavButtonAsUnmarked();
                         isMarkedAsFavorite = false;
                     } else {
                         /* Adds a copy of the movie to the DB */
-                        DBUtils.addMovie(getParent(), movieCpy);
+                        moviesListViewModel.addMovie(getParent(), movieCpy);
+                        /*DBUtils.addMovie(getParent(), movieCpy);*/
                         styleFavButtonAsMarked();
                         isMarkedAsFavorite = true;
                     }
                 } else {
                     /* Here we have no choice but to fetch the info directly from the DB (since the 'isMarkedAsFavorite var isn't yet populated  */
                     /* Check if this movie's ID is present in the DB */
-                    DBUtils.getMovieByID(getParent(), mMovieID, new GetMovieCallback() {
+                    moviesListViewModel.getMovieByID(getParent(), mMovieID, new GetMovieCallback() {
                         @Override
                         public void getSingleMovie(Movie movie) {
                             if (movie != null) {
@@ -146,13 +152,15 @@ public class DetailsActivity extends AppCompatActivity {
                                 isMarkedAsFavorite = false;
 
                                 /* Remove from the DB */
-                                DBUtils.deleteMovie(getParent(), movieCpy);
+                                moviesListViewModel.deleteMovie(getParent(), movieCpy);
+                                /*DBUtils.deleteMovie(getParent(), movieCpy);*/
                             } else {
                                 isMarkedAsFavorite = true;
 
                                 /* Adds a copy of the movie to the DB */
                                 styleFavButtonAsMarked();
-                                DBUtils.addMovie(getParent(), movieCpy);
+                                moviesListViewModel.addMovie(getParent(), movieCpy);
+                                /*DBUtils.addMovie(getParent(), movieCpy);*/
                             }
 
                         }
@@ -179,7 +187,7 @@ public class DetailsActivity extends AppCompatActivity {
      */
     private void checkFavoriteStatus() {
         /* Check if this movie's ID is present in the DB */
-        DBUtils.getMovieByID(this, mMovieID, new GetMovieCallback() {
+        moviesListViewModel.getMovieByID(this, mMovieID, new GetMovieCallback() {
             @Override
             public void getSingleMovie(Movie movie) {
                 if (movie != null) {

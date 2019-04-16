@@ -262,11 +262,11 @@ public class MovieSync implements Constants {
     }
 
 
-    public static List<Movie> getFavoriteMovies(Context context) {
+    /*public static List<Movie> getFavoriteMovies(Context context) {
         List<Movie> moviesList = new ArrayList<>();
-        /* Get all the movies in the DB */
+         Get all the movies in the DB
         moviesList = DBUtils.getAllMoviesSync(context);
 
         return moviesList;
-    }
+    }*/
 }

@@ -22,6 +22,7 @@ import com.itsector.popularmoviesapp.utils.ImageLoader;
 import com.itsector.popularmoviesapp.utils.MovieUtils;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,6 +41,12 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
         this.listener = listener;
     }
 
+    public void swap(List<Movie> dataset)
+    {
+        mMoviesList.clear();
+        mMoviesList.addAll(dataset);
+        notifyDataSetChanged();
+    }
 
     /* Create the new views */
     @NonNull

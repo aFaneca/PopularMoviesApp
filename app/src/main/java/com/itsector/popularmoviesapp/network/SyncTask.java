@@ -41,8 +41,8 @@ public class SyncTask extends AsyncTask<Void, Void, List<Movie>> implements Cons
                 return MovieSync.getPopularMovies();
             case SORT_ORDER_RATING_DESC:
                 return MovieSync.getTopRatedMovies();
-            case SORT_ORDER_FAVORITES:
-                return MovieSync.getFavoriteMovies(context);
+            /*case SORT_ORDER_FAVORITES:
+                return MovieSync.getFavoriteMovies(context);*/
             default:
                 return MovieSync.getPopularMovies();
         }

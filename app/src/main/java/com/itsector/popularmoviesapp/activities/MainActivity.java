@@ -8,7 +8,13 @@
 
 package com.itsector.popularmoviesapp.activities;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -22,20 +28,22 @@ import com.itsector.popularmoviesapp.models.Movie;
 import com.itsector.popularmoviesapp.network.AsyncResponse;
 import com.itsector.popularmoviesapp.network.MovieSync;
 import com.itsector.popularmoviesapp.network.SyncTask;
-import com.itsector.popularmoviesapp.utils.APIUtils;
+import com.itsector.popularmoviesapp.utils.Constants;
 import com.itsector.popularmoviesapp.utils.DBUtils;
-import com.itsector.popularmoviesapp.utils.GetMovieCallback;
 import com.itsector.popularmoviesapp.utils.MovieUtils;
+import com.itsector.popularmoviesapp.utils.MoviesListViewModel;
 import com.itsector.popularmoviesapp.views.adapters.MoviesListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Constants {
     private static final int NUMBER_OF_COLUMNS = 2;
     private RecyclerView mMoviesList_recycler_view;
     private MoviesListAdapter mMoviesListAdapter;
     private List<Movie> mMoviesList;
+    private List<Movie> mFavoriteMovies;
+    private MoviesListViewModel moviesListViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +59,23 @@ public class MainActivity extends AppCompatActivity {
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, NUMBER_OF_COLUMNS);
         mMoviesList_recycler_view.setLayoutManager(gridLayoutManager);
+        getNewMoviesListAdapter(new ArrayList<Movie>());
         mMoviesList_recycler_view.setAdapter(mMoviesListAdapter);
+
+        moviesListViewModel = ViewModelProviders.of(this).get(MoviesListViewModel.class);
+        moviesListViewModel.getMoviesList().observe(MainActivity.this, new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(@Nullable List<Movie> movies) {
+                /* Keeping a local copy of the favorite movies list */
+                mFavoriteMovies = movies;
+
+                /* Checks Shared Preferences */
+                String sortOrder = DBUtils.getSortOrderFromSharedPreferences(getApplicationContext());
+                /* Only update the UI if we're showing the favorite movies list */
+                if (sortOrder.equals(SORT_ORDER_FAVORITES))
+                    updateAdapter(movies);
+            }
+        });
 
     }
 
@@ -62,9 +86,18 @@ public class MainActivity extends AppCompatActivity {
         /* Update the dataset in the adapter, in case the sorting settings have changed
          *  (It won't make a new API request. It'll only resort the dataset and refresh the view
          * */
-        if (mMoviesList != null)
-            /*updateAdapter(mMoviesList);*/
+        String sortOrder = DBUtils.getSortOrderFromSharedPreferences(getApplicationContext());
+
+        /* If we need to display the favorites list */
+        if (sortOrder.equals(SORT_ORDER_FAVORITES)) {
+            if (mFavoriteMovies != null)
+                updateAdapter(mFavoriteMovies);
+        } else {
+            /* Else, the sync task will check what type of list we need (By Rating or By Popularity)
+             * and fetch it, storing it in the mMoviesList variable */
+            /*if (mMoviesList != null)*/
             startSyncTask();
+        }
     }
 
     @Override
@@ -88,25 +121,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startSyncTask() {
-        SyncTask task = new SyncTask(new AsyncResponse() {
-            @Override
-            public void onGetMoviesCompleted(List<Movie> moviesList) {
-                /*moviesList = sortMoviesOrder(moviesList);*/
-                mMoviesList = moviesList;
-                updateAdapter(mMoviesList);
-            }
-        }, this);
-        task.execute();
+        /* Checks Shared Preferences */
+        String sortOrder = DBUtils.getSortOrderFromSharedPreferences(getApplicationContext());
+
+        if (!sortOrder.equals(SORT_ORDER_FAVORITES)) {
+            SyncTask task = new SyncTask(new AsyncResponse() {
+                @Override
+                public void onGetMoviesCompleted(List<Movie> moviesList) {
+                    mMoviesList = moviesList;
+                    updateAdapter(mMoviesList);
+                }
+            }, this);
+            task.execute();
+        }
     }
 
     /**
-     * Sorts the new dataset provided (updatedDataset) and feeds it to the adapter
+     * Feeds the new data to the adapter
      *
      * @param updatedDataset
      */
     private void updateAdapter(List<Movie> updatedDataset) {
-        /*mMoviesList = sortMoviesOrder(updatedDataset);*/
-        mMoviesList_recycler_view.swapAdapter(getNewMoviesListAdapter(mMoviesList), true);
+        mMoviesListAdapter.swap(updatedDataset);
     }
 
     /**
@@ -116,8 +152,8 @@ public class MainActivity extends AppCompatActivity {
      * @return
      */
     private RecyclerView.Adapter getNewMoviesListAdapter(List<Movie> dataset) {
-        mMoviesList = sortMoviesOrder(dataset);
-        mMoviesListAdapter = new MoviesListAdapter(mMoviesList, new MoviesListAdapter.OnItemClickListener() {
+        /*mMoviesList = sortMoviesOrder(dataset);*/
+        mMoviesListAdapter = new MoviesListAdapter(dataset, new MoviesListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Movie movie) {
                 goToDetailsForMovie(movie);
@@ -138,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void goToDetailsForMovie(Movie movie) {
         /* Knowing that I can't access the 'movie' object from within the inner class below (the runnable),
-        * I declared the below final variable, so that I can interact between the second thread and this method */
+         * I declared the below final variable, so that I can interact between the second thread and this method */
         final List<Movie> movies = new ArrayList<>();
         movies.add(movie);
 
@@ -202,4 +238,6 @@ public class MainActivity extends AppCompatActivity {
                 .putExtra(getString(R.string.details_bundle_key), args);
         startActivity(detailsIntent);
     }
+
+
 }

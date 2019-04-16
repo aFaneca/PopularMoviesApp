@@ -12,13 +12,13 @@ package com.itsector.popularmoviesapp.models;
  * Created by E936 on 4/16/2019.
  */
 public class Video {
-    private int mID;
+    private String mID;
     private String mKey;
     private String mName;
     private String mType;
     private String mSite;
 
-    public Video(int mID, String mKey, String mName, String mType, String mSite) {
+    public Video(String mID, String mKey, String mName, String mType, String mSite) {
         this.mID = mID;
         this.mKey = mKey;
         this.mName = mName;
@@ -28,11 +28,11 @@ public class Video {
 
     /* GETTERS & SETTERS */
 
-    public int getID() {
+    public String getID() {
         return mID;
     }
 
-    public void setID(int mID) {
+    public void setID(String mID) {
         this.mID = mID;
     }
 

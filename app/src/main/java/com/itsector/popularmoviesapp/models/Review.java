@@ -12,23 +12,25 @@ package com.itsector.popularmoviesapp.models;
  * Created by E936 on 4/16/2019.
  */
 public class Review {
-    private int mID;
+    private String mID;
     private String mAuthor;
     private String mContent;
+    private String mURL;
 
-    public Review(int mID, String mAuthor, String mContent) {
+    public Review(String mID, String mAuthor, String mContent, String mURL) {
         this.mID = mID;
         this.mAuthor = mAuthor;
         this.mContent = mContent;
+        this.mURL = mURL;
     }
 
     /* GETTERS & SETTERS */
 
-    public int getmID() {
+    public String getmID() {
         return mID;
     }
 
-    public void setmID(int mID) {
+    public void setmID(String mID) {
         this.mID = mID;
     }
 
@@ -46,5 +48,13 @@ public class Review {
 
     public void setmContent(String mContent) {
         this.mContent = mContent;
+    }
+
+    public String getmURL() {
+        return mURL;
+    }
+
+    public void setmURL(String mURL) {
+        this.mURL = mURL;
     }
 }

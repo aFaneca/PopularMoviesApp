@@ -9,13 +9,19 @@
 package com.itsector.popularmoviesapp.network;
 
 import android.content.Context;
-import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.itsector.popularmoviesapp.activities.DetailsActivity;
 import com.itsector.popularmoviesapp.models.Movie;
+import com.itsector.popularmoviesapp.models.Review;
+import com.itsector.popularmoviesapp.models.Video;
 import com.itsector.popularmoviesapp.utils.APIUtils;
 import com.itsector.popularmoviesapp.utils.Constants;
-import com.itsector.popularmoviesapp.utils.DBUtils;
-import com.itsector.popularmoviesapp.utils.GetAllMoviesCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,7 +31,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -204,6 +209,126 @@ public class MovieSync implements Constants {
 
 
         return new Movie(-1, "", "");
+    }
+
+    synchronized public static void getMovieVideos(Context context, int movieID, final DetailsActivity.getVideosCallback callback){
+        List<Review> movieReviews = new ArrayList<>();
+
+        URL url = APIUtils.getFullURLforAction(API_ACTIONS.API_GET_MOVIE_TRAILERS, movieID + "");
+
+        /* Instantiates the RequestQueue*/
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url.toString(), null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                getVideosFromJSon(response, callback);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        RequestQueueSingleton.getInstance(context).addToRequestQueue(jsonRequest, REQUEST_GET_MOVIE_TRAILERS_TAG);
+    }
+
+    /**
+     * Converts the string representing the JSON response and extracts the important data
+     *
+     * @param jsonObject
+     */
+    private static void getVideosFromJSon(JSONObject jsonObject, DetailsActivity.getVideosCallback callback) {
+        List<Video> videosList = new ArrayList<>();
+
+        try {
+            JSONArray resultsArr = jsonObject.getJSONArray(API_VIDEOS_BASE_OBJ);
+
+            for (int i = 0; i < resultsArr.length(); i++) {
+                JSONObject reviewEntry = resultsArr.getJSONObject(i);
+
+                String ID = reviewEntry.getString(API_VIDEOS_ID);
+                String key = reviewEntry.getString(API_VIDEOS_KEY);
+                String type = reviewEntry.getString(API_VIDEOS_TYPE);
+                String name = reviewEntry.getString(API_VIDEOS_NAME);
+                String site = reviewEntry.getString(API_VIDEOS_SITE);
+
+
+                videosList.add(new Video(ID, key, name, type, site));
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        /* Callback */
+        callback.getAllVideos(videosList);
+    }
+
+    synchronized public static void getMovieReviews(Context context, int movieID, final DetailsActivity.getReviewsCallback callback){
+        List<Review> movieReviews = new ArrayList<>();
+
+        URL url = APIUtils.getFullURLforAction(API_ACTIONS.API_GET_MOVIE_REVIEWS, movieID + "");
+
+        /* Instantiates the RequestQueue*/
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url.toString(), null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                getReviewsFromJSon(response, callback);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+       RequestQueueSingleton.getInstance(context).addToRequestQueue(jsonRequest, REQUEST_GET_MOVIE_REVIEWS_TAG);
+    }
+
+    /**
+     * Converts the string representing the JSON response and extracts the important data
+     *
+     * @param jsonObject
+     */
+    private static void getReviewsFromJSon(JSONObject jsonObject, DetailsActivity.getReviewsCallback callback) {
+        List<Review> reviewsList = new ArrayList<>();
+
+        try {
+            JSONArray resultsArr = jsonObject.getJSONArray(API_REVIEWS_BASE_OBJ);
+
+            for (int i = 0; i < resultsArr.length(); i++) {
+                JSONObject reviewEntry = resultsArr.getJSONObject(i);
+
+                String ID = reviewEntry.getString(API_REVIEWS_ID);
+                String url = reviewEntry.getString(API_REVIEWS_URL);
+                String author = reviewEntry.getString(API_REVIEWS_AUTHOR);
+                String content = reviewEntry.getString(API_REVIEWS_CONTENT);
+
+
+                String subContent = getShortContent(content);
+
+                reviewsList.add(new Review(ID, author, subContent, url));
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        /* Callback */
+        callback.getAllReviews(reviewsList);
+    }
+
+    private static String getShortContent(String content) {
+        String shortContent = "";
+        int maxChars = (content.length() <= REVIEWS_MAX_CHARS) ? content.length() : REVIEWS_MAX_CHARS;
+
+        shortContent = content.substring(0, maxChars) + "...";
+
+        return shortContent;
     }
 
 

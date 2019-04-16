@@ -98,9 +98,9 @@
                     android:id="@+id/details_movie_fav_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/details_fav_btn_padding"
                     android:text="@string/details_mark_as_favorite"
-                    android:textColor="@android:color/white"
-                    android:padding="@dimen/details_fav_btn_padding"/>
+                    android:textColor="@android:color/white" />
             </LinearLayout>
         </LinearLayout>
 
@@ -135,11 +135,25 @@
                 android:text="@string/details_trailers"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/videos_list_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </android.support.v7.widget.RecyclerView>
+            
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/details_reviews"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/reviews_list_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </android.support.v7.widget.RecyclerView>
 
         </LinearLayout>
     </LinearLayout>

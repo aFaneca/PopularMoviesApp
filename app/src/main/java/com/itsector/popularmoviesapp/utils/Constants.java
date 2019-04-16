@@ -10,8 +10,8 @@ public interface Constants {
     String PATH_POPULAR_MOVIES = "movie/popular";
     String PATH_TOP_RATED_MOVIES = "movie/top_rated";
     String PATH_MOVIE = "movie/";
-    String PATH_REVIEWS = "reviews";
-    String PATH_TRAILERS = "videos";
+    String PATH_REVIEWS = "/reviews";
+    String PATH_TRAILERS = "/videos";
 
     String BASE_API_IMG_URL = "http://image.tmdb.org/t/p/";
     String BASE_API_IMG_SIZE = "w185";
@@ -65,4 +65,13 @@ public interface Constants {
     /* DB */
     String DB_NAME = "movies_db";
 
+    /* REQUEST TAGS (FOR VOLLEY) */
+    String REQUEST_GET_MOVIE_REVIEWS_TAG = "REQUEST_GET_MOVIE_REVIEWS_TAG";
+    String REQUEST_GET_MOVIE_TRAILERS_TAG = "REQUEST_GET_MOVIE_TRAILERS_TAG";
+
+
+    /* VIDEOS & REVIEWS */
+    String YOUTUBE_VIDEOS_BASE_URL = "https://www.youtube.com/watch?v=";
+    String YOUTUBE_SITE_LABEL = "YouTube";
+    int REVIEWS_MAX_CHARS = 140;
 }

@@ -41,4 +41,8 @@
     <!-- Menu Actions -->
     <string name="action_settings" translatable="false">Settings</string>
 
+    <!-- VIDEOS & REVIEWS -->
+    <string name="details_videos_no_videos">No videos to show.</string>
+    <string name="details_reviews_no_reviews">No reviews to show.</string>
+
 </resources>

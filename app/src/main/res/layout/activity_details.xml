@@ -141,7 +141,14 @@
                 android:layout_height="wrap_content">
 
             </android.support.v7.widget.RecyclerView>
-            
+            <TextView
+                android:id="@+id/details_videos_no_videos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/details_videos_no_videos"
+                android:gravity="center"
+                android:layout_marginBottom="20dp"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -151,10 +158,18 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/reviews_list_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                >
 
             </android.support.v7.widget.RecyclerView>
-
+            <TextView
+                android:id="@+id/details_reviews_no_reviews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/details_reviews_no_reviews"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_marginBottom="20dp"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

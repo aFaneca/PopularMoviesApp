@@ -369,6 +369,12 @@ public class DetailsActivity extends AppCompatActivity {
      */
     private void updateReviewsAdapter(List<Review> updatedDataset) {
         mMovieReviewsAdapter.swap(updatedDataset);
+
+        if(updatedDataset.isEmpty()){
+            findViewById(R.id.details_reviews_no_reviews).setVisibility(View.VISIBLE);
+        }else{
+            findViewById(R.id.details_reviews_no_reviews).setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -378,5 +384,11 @@ public class DetailsActivity extends AppCompatActivity {
      */
     private void updateVideosAdapter(List<Video> updatedDataset) {
         mMovieVideosAdapter.swap(updatedDataset);
+
+        if(updatedDataset.isEmpty()){
+            findViewById(R.id.details_videos_no_videos).setVisibility(View.VISIBLE);
+        }else{
+            findViewById(R.id.details_videos_no_videos).setVisibility(View.GONE);
+        }
     }
 }

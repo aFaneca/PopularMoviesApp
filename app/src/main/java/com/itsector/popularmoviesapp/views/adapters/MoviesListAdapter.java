@@ -41,6 +41,10 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
         this.listener = listener;
     }
 
+    /**
+     * Swaps the adapter's dataset for the one provided
+     * @param dataset - the new dataset
+     */
     public void swap(List<Movie> dataset)
     {
         mMoviesList.clear();

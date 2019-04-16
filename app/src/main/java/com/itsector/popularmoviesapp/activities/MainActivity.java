@@ -12,6 +12,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -47,9 +48,7 @@ public class MainActivity extends AppCompatActivity implements Constants {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /* Removes unnecessary shadows below the action bar*/
-        getSupportActionBar().setElevation(0f);
-
+        setupActionBar();
         startSyncTask();
 
         mMoviesList_recycler_view = (RecyclerView) findViewById(R.id.movie_list_recycler_view);
@@ -76,23 +75,58 @@ public class MainActivity extends AppCompatActivity implements Constants {
 
     }
 
+    private void setupActionBar() {
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |
+                ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_USE_LOGO);
+        getSupportActionBar().setTitle(" " + getActionBarTitle());
+        getSupportActionBar().setIcon(R.drawable.ic_popcorn);
+
+        /* Removes unnecessary shadows below the action bar */
+        getSupportActionBar().setElevation(0f);
+    }
+
+    /**
+     * Chooses a title for the action bar depending on the sort order preferences
+     * @return
+     */
+    private String getActionBarTitle() {
+        String sortOrder = DBUtils.getSortOrderFromSharedPreferences(getApplicationContext());
+        String title = "";
+
+        switch(sortOrder){
+            case SORT_ORDER_FAVORITES:
+                title = getString(R.string.app_name_fav);
+                break;
+            case SORT_ORDER_POPULARITY_DESC:
+                title = getString(R.string.app_name_popular);
+                break;
+            case SORT_ORDER_RATING_DESC:
+                title = getString(R.string.app_name_rating);
+                break;
+            default:
+                title = getString(R.string.app_name_default);
+                break;
+        }
+
+        return title;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
+        /* Update the action bar title */
+        getSupportActionBar().setTitle(" " + getActionBarTitle());
 
-        /* Update the dataset in the adapter, in case the sorting settings have changed
-         *  (It won't make a new API request. It'll only resort the dataset and refresh the view
-         * */
         String sortOrder = DBUtils.getSortOrderFromSharedPreferences(getApplicationContext());
 
-        /* If we need to display the favorites list */
+        /* If we need to display the favorites list... */
         if (sortOrder.equals(SORT_ORDER_FAVORITES)) {
             if (mFavoriteMovies != null)
+                /* ... update the adapter's dataset*/
                 updateAdapter(mFavoriteMovies);
         } else {
             /* Else, the sync task will check what type of list we need (By Rating or By Popularity)
              * and fetch it, storing it in the mMoviesList variable */
-            /*if (mMoviesList != null)*/
             startSyncTask();
         }
     }
@@ -171,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements Constants {
      */
     private void goToDetailsForMovie(Movie movie) {
         /* Knowing that I can't access the 'movie' object from within the inner class below (the runnable),
-         * I declared the below final variable, so that I can interact between the second thread and this method */
+         * I made the variable below final, so that I can interact between the second thread and this method */
         final List<Movie> movies = new ArrayList<>();
         movies.add(movie);
 
@@ -198,16 +232,16 @@ public class MainActivity extends AppCompatActivity implements Constants {
             });
             t.start();
             try {
-                t.join();
+                t.join(); /* Wait for the thread to finish its job before moving on */
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
         }
 
-        /* Now, the movie object we care about will always be the last one added to the movies list */
+        /* The movie object we care about will always be the last one added to the movies list */
         movie = movies.get(movies.size() - 1);
-        /* All the info the views needs */
+
+        /* All the info the views need */
         movieID = movie.getID();
         originalTitle = movie.getOriginalTitle();
         year = movie.getYear();
@@ -216,7 +250,6 @@ public class MainActivity extends AppCompatActivity implements Constants {
         synopsis = movie.getPlotSynopsis();
         imgPath = movie.getImgPath();
         backdropPath = movie.getBackdropImgPath();
-
 
 
         /* Put all the data into a bundle */
@@ -235,6 +268,4 @@ public class MainActivity extends AppCompatActivity implements Constants {
                 .putExtra(getString(R.string.details_bundle_key), args);
         startActivity(detailsIntent);
     }
-
-
 }

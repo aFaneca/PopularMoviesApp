@@ -9,6 +9,7 @@ import com.squareup.picasso.Picasso;
 import java.net.URL;
 
 /**
+ * Abstraction layer to deal with Image Loading (using Picasso)
  * Created by E936 on 4/11/2019.
  */
 public class ImageLoader {

@@ -4,4 +4,8 @@
         <!-- I need to allow this domain in order to be able to comm with the API -->
         <domain includeSubdomains="true">tmdb.org</domain>
     </domain-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <!-- I need to allow this domain in order to be able to comm with the API -->
+        <domain includeSubdomains="true">https://api.themoviedb.org</domain>
+    </domain-config>
 </network-security-config>

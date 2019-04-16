@@ -10,12 +10,14 @@ public interface Constants {
     String PATH_POPULAR_MOVIES = "movie/popular";
     String PATH_TOP_RATED_MOVIES = "movie/top_rated";
     String PATH_MOVIE = "movie/";
+    String PATH_REVIEWS = "reviews";
+    String PATH_TRAILERS = "videos";
 
     String BASE_API_IMG_URL = "http://image.tmdb.org/t/p/";
     String BASE_API_IMG_SIZE = "w185";
     String BASE_API_BACKDROP_SIZE = "w780";
 
-    /* NAMES OF JSON Objects RELEVANT FOR POPULAR MOVIES */
+    /* NAMES OF JSON OBJECTS RELEVANT FOR POPULAR & TOP RATED MOVIES */
     String API_POPULAR_BASE_OBJ = "results";
     String API_POPULAR_ID = "id";
     String API_POPULAR_ORIGINAL_TITLE = "original_title";
@@ -26,12 +28,30 @@ public interface Constants {
     String API_POPULAR_RELEASE_DATE = "release_date";
     String API_POPULAR_POPULARITY = "popularity";
 
+    /* NAMES OF JSON OBJECTS RELEVANT FOR REVIEWS */
+    String API_REVIEWS_BASE_OBJ = "results";
+    String API_REVIEWS_AUTHOR = "author";
+    String API_REVIEWS_CONTENT = "content";
+    String API_REVIEWS_ID = "id";
+    String API_REVIEWS_URL = "url";
+
+    /* NAMES OF JSON OBJECTS RELEVANT FOR TRAILERS/VIDEOS */
+    String API_VIDEOS_BASE_OBJ = "results";
+    String API_VIDEOS_KEY = "key";
+    String API_VIDEOS_NAME = "name";
+    String API_VIDEOS_ID = "id";
+    String API_VIDEOS_TYPE = "type";
+    String API_VIDEOS_SITE = "site";
+
+
 
     /* API Actions */
     enum API_ACTIONS {
         API_GET_POPULAR_MOVIES,
         API_GET_TOP_RATED_MOVIES,
-        API_GET_MOVIE
+        API_GET_MOVIE,
+        API_GET_MOVIE_REVIEWS,
+        API_GET_MOVIE_TRAILERS
     }
 
 

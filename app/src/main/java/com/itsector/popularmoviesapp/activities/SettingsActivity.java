@@ -41,6 +41,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
        /* setSupportActionBar((Toolbar) findViewById(R.id.settings_toolbar));*/
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setTitle(R.string.action_settings);
 
         addPreferencesFromResource(R.xml.pref_general);

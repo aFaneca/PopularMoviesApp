@@ -9,6 +9,7 @@
 package com.itsector.popularmoviesapp.network;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.itsector.popularmoviesapp.models.Movie;
 import com.itsector.popularmoviesapp.utils.APIUtils;
@@ -29,6 +30,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.net.ssl.HttpsURLConnection;
+
 /**
  * Created by E936 on 4/12/2019.
  */
@@ -36,7 +39,7 @@ public class MovieSync implements Constants {
 
 
     synchronized public static List<Movie> getPopularMovies() {
-        HttpURLConnection urlConn = null;
+        HttpsURLConnection urlConn = null;
         BufferedReader reader = null;
 
         /* Will contain the JSON response */
@@ -46,7 +49,7 @@ public class MovieSync implements Constants {
 
         /* Make the request */
         try {
-            urlConn = (HttpURLConnection) requestURL.openConnection();
+            urlConn = (HttpsURLConnection) requestURL.openConnection();
             urlConn.setRequestMethod("GET");
             urlConn.connect();
 
@@ -71,7 +74,12 @@ public class MovieSync implements Constants {
 
             return getMoviesFromJSon(jsonResponseStr);
 
-        } catch (IOException e) {
+        } catch (javax.net.ssl.SSLException e){
+
+            e.printStackTrace();
+
+        }
+        catch (IOException e) {
             e.printStackTrace();
         } finally {
             if (urlConn != null) urlConn.disconnect();
@@ -89,7 +97,7 @@ public class MovieSync implements Constants {
     }
 
     synchronized public static List<Movie> getTopRatedMovies() {
-        HttpURLConnection urlConn = null;
+        HttpsURLConnection urlConn = null;
         BufferedReader reader = null;
 
         /* Will contain the JSON response */
@@ -99,7 +107,7 @@ public class MovieSync implements Constants {
 
         /* Make the request */
         try {
-            urlConn = (HttpURLConnection) requestURL.openConnection();
+            urlConn = (HttpsURLConnection) requestURL.openConnection();
             urlConn.setRequestMethod("GET");
             urlConn.connect();
 
@@ -124,6 +132,8 @@ public class MovieSync implements Constants {
 
             return getMoviesFromJSon(jsonResponseStr);
 
+        } catch (javax.net.ssl.SSLException e){
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -142,7 +152,7 @@ public class MovieSync implements Constants {
     }
 
     synchronized public static Movie getMovie(int movieID) {
-        HttpURLConnection urlConn = null;
+        HttpsURLConnection urlConn = null;
         BufferedReader reader = null;
 
         /* Will contain the JSON response */
@@ -152,7 +162,7 @@ public class MovieSync implements Constants {
 
         /* Make the request */
         try {
-            urlConn = (HttpURLConnection) requestURL.openConnection();
+            urlConn = (HttpsURLConnection) requestURL.openConnection();
             urlConn.setRequestMethod("GET");
             urlConn.connect();
 
@@ -177,6 +187,8 @@ public class MovieSync implements Constants {
 
             return getSingleMovieFromJson(jsonResponseStr);
 
+        } catch (javax.net.ssl.SSLException e){
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -205,7 +217,6 @@ public class MovieSync implements Constants {
 
         try {
             JSONObject movieEntry = new JSONObject(jsonResponseStr);
-            /*JSONArray resultsArr = resultsJson.getJSONArray(API_POPULAR_BASE_OBJ);*/
 
             int ID = movieEntry.getInt(API_POPULAR_ID);
             String originalTitle = movieEntry.getString(API_POPULAR_ORIGINAL_TITLE);
@@ -260,13 +271,4 @@ public class MovieSync implements Constants {
 
         return moviesList;
     }
-
-
-    /*public static List<Movie> getFavoriteMovies(Context context) {
-        List<Movie> moviesList = new ArrayList<>();
-         Get all the movies in the DB
-        moviesList = DBUtils.getAllMoviesSync(context);
-
-        return moviesList;
-    }*/
 }

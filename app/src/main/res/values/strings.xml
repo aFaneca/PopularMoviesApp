@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Popular Movies</string>
+    <string name="app_name_default">Popular Movies</string>
+    <string name="app_name_popular">Popular Movies</string>
+    <string name="app_name_rating">Top Rated Movies</string>
+    <string name="app_name_fav">Favorite Movies</string>
 
     <!-- Details Activity -->
     <string name="details_label">Movie Details</string>

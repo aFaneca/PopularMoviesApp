@@ -12,11 +12,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.itsector.popularmoviesapp.data.MovieDatabase;
-import com.itsector.popularmoviesapp.models.Movie;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -31,112 +26,5 @@ public class DBUtils implements Constants{
 
         return sortOrder;
     }
-/*
-    *//**
-     * Async method; Adds a movie to the db
-     * @param context
-     * @param movie
-     * @return
-     *//*
-    public static Movie addMovie(final Context context, final Movie movie){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                MovieDatabase db = MovieDatabase.getMovieDatabase(context);
-
-                *//* Add the movie to the db *//*
-                db.daoAccess().insertSingleMovie(movie);
-
-
-            }
-        }).start();
-
-        return movie;
-    }
-
-    *//**
-     * Async method; deletes a movie from the db
-     * @param context
-     * @param movie
-     * @return
-     *//*
-    public static void deleteMovie(final Context context, final Movie movie){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                MovieDatabase db = MovieDatabase.getMovieDatabase(context);
-
-                *//* Remove the movie from the db *//*
-                db.daoAccess().deleteMovie(movie);
-            }
-        }).start();
-    }
-
-    *//**
-     * Async method; Gets movie from the db, by its ID
-     * @param context
-     * @param movieID
-     * @param callback
-     * @return
-     *//*
-    public static void getMovieByID(final Context context, final int movieID, final GetMovieCallback callback){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                MovieDatabase db = MovieDatabase.getMovieDatabase(context);
-
-                Movie movie = db.daoAccess().getMovieByID(movieID);
-
-                callback.getSingleMovie(movie);
-            }
-        }).start();
-    }
-
-    *//**
-     * Async method; Gets all movies from the DB
-     * @param context
-     * @param callback
-     * @return
-     *//*
-    public static void getAllMovies(final Context context, final GetAllMoviesCallback callback){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                MovieDatabase db = MovieDatabase.getMovieDatabase(context);
-
-                List<Movie> movieList = db.daoAccess().getAllMovies();
-
-                callback.getAllMovies(movieList);
-            }
-        }).start();
-    }
-
-    *//**
-     * Sync method; Gets all movies from the DB;
-     * THIS METHOD IS THREAD BLOCKING AND SHOULD ONLY BE USED WHEN NECESSARY
-     * @param context
-     * @param callback
-     * @return
-     *//*
-    private static List<Movie> moviesList; *//* so that I can access it from within the inner class *//*
-    public static List<Movie> getAllMoviesSync(final Context context){
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                MovieDatabase db = MovieDatabase.getMovieDatabase(context);
-
-                moviesList = db.daoAccess().getAllMovies();
-            }
-        });
-        t.start();
-        try {
-            t.join(); *//* Wait for the thread to do its job *//*
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }finally {
-            return moviesList;
-        }
-
-    }*/
 
 }

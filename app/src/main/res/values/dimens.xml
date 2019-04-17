@@ -6,6 +6,7 @@
     <dimen name="details_top_specs_margin_bottom">10dp</dimen>
     <dimen name="details_trailers_margin_top">10dp</dimen>
     <dimen name="details_top_specs_margin_top">-50dp</dimen>
+    <dimen name="details_inner_top_specs_margin_top">50dp</dimen>
     <dimen name="details_reviews_no_review_margin_bottom">20dp</dimen>
     <dimen name="details_videos_no_video_margin_bottom">20dp</dimen>
 

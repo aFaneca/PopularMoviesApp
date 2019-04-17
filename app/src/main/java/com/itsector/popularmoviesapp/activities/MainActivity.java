@@ -29,17 +29,14 @@ import com.itsector.popularmoviesapp.network.MovieSync;
 import com.itsector.popularmoviesapp.network.SyncTask;
 import com.itsector.popularmoviesapp.utils.Constants;
 import com.itsector.popularmoviesapp.utils.DBUtils;
-import com.itsector.popularmoviesapp.utils.ImageLoader;
 import com.itsector.popularmoviesapp.utils.MovieUtils;
 import com.itsector.popularmoviesapp.utils.MoviesListViewModel;
 import com.itsector.popularmoviesapp.views.adapters.MoviesListAdapter;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements Constants {
-    private static final int NUMBER_OF_COLUMNS = 2;
     private RecyclerView mMoviesList_recycler_view;
     private MoviesListAdapter mMoviesListAdapter;
     private List<Movie> mMoviesList;
@@ -56,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements Constants {
 
         mMoviesList_recycler_view = (RecyclerView) findViewById(R.id.movie_list_recycler_view);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, NUMBER_OF_COLUMNS);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, getResources().getInteger(R.integer.recyler_view_videos_num_of_columns));
         mMoviesList_recycler_view.setLayoutManager(gridLayoutManager);
         getNewMoviesListAdapter(new ArrayList<Movie>());
         mMoviesList_recycler_view.setAdapter(mMoviesListAdapter);

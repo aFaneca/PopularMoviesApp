@@ -40,9 +40,13 @@
 
     <!-- Menu Actions -->
     <string name="action_settings" translatable="false">Settings</string>
+    <string name="action_share" translatable="false">Share</string>
 
     <!-- VIDEOS & REVIEWS -->
     <string name="details_videos_no_videos">No videos to show.</string>
     <string name="details_reviews_no_reviews">No reviews to show.</string>
+
+    <!-- Share Action Provider -->
+    <string name="movie_share_string">Check this out: %s (%d) has %s rating! #ITSector</string>
 
 </resources>

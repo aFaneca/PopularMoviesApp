@@ -16,10 +16,16 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ShareActionProvider;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -63,15 +69,17 @@ public class DetailsActivity extends AppCompatActivity {
     private Button mMovieFav_button;
     private ImageView mMovieThumbnail_image_view;
 
+    private ShareActionProvider mShareActionProvider;
+
     /* Holds a "cached" version of this value during the lifecycle of this activity, to avoid unnecessary calls to the DB */
     private Boolean isMarkedAsFavorite;
     MoviesListViewModel moviesListViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-
         moviesListViewModel = ViewModelProviders.of(this).get(MoviesListViewModel.class);
 
         setupReviewsListAdapter();
@@ -86,7 +94,9 @@ public class DetailsActivity extends AppCompatActivity {
         mMovieThumbnail_image_view = (ImageView) findViewById(R.id.details_movie_thumbnail_image_view);
         mMovieFav_button = (Button) findViewById(R.id.details_movie_fav_button);
 
+        Toolbar toolbar = findViewById(R.id.details_toolbar);
 
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.details_label);
@@ -94,6 +104,37 @@ public class DetailsActivity extends AppCompatActivity {
         bindViews();
         getReviews();
         getVideos();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_details, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_share);
+
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+        mShareActionProvider.setShareIntent(createShareMovieIntent());
+
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    private Intent createShareMovieIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, getMovieShareStr());
+
+        return shareIntent;
+    }
+
+    private String getMovieShareStr() {
+        String movieName = mReceivedBundle.getString(getString(R.string.details_title_key));
+        int year = mReceivedBundle.getInt(getString(R.string.details_year_key));
+        String rating = getString(R.string.details_rating, mReceivedBundle.getDouble(getString(R.string.details_rating_key)));
+
+        return getString(R.string.movie_share_string, movieName, year, rating) ;
     }
 
     private void setupVideosListAdapter() {

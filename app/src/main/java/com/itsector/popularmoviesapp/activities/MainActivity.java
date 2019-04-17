@@ -20,6 +20,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.itsector.popularmoviesapp.R;
 import com.itsector.popularmoviesapp.models.Movie;
@@ -28,10 +29,12 @@ import com.itsector.popularmoviesapp.network.MovieSync;
 import com.itsector.popularmoviesapp.network.SyncTask;
 import com.itsector.popularmoviesapp.utils.Constants;
 import com.itsector.popularmoviesapp.utils.DBUtils;
+import com.itsector.popularmoviesapp.utils.ImageLoader;
 import com.itsector.popularmoviesapp.utils.MovieUtils;
 import com.itsector.popularmoviesapp.utils.MoviesListViewModel;
 import com.itsector.popularmoviesapp.views.adapters.MoviesListAdapter;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 

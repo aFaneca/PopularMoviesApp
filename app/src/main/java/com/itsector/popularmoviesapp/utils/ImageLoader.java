@@ -1,10 +1,10 @@
 package com.itsector.popularmoviesapp.utils;
 
-import android.content.Context;
 import android.widget.ImageView;
 
 import com.itsector.popularmoviesapp.R;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.net.URL;
 
@@ -24,6 +24,18 @@ public class ImageLoader {
 
         /*Picasso.get().setLoggingEnabled(true);*/
         Picasso.get().load(url_str).placeholder(R.drawable.ic_launcher_background).into(imageView);
+        /*Glide.with(context).load(url_str).placeholder(R.drawable.ic_launcher_background).into(imageView);*/
+    }
+
+    /**
+     * Loads the image into a view, thought a target
+     * @param url
+     * @param target
+     */
+    public static void loadImage(URL url, Target target){
+        String url_str = String.valueOf(url);
+
+        Picasso.get().load(url_str).placeholder(R.drawable.ic_launcher_background).into(target);
     }
 
 }

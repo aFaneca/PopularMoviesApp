@@ -62,7 +62,6 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView mDetails_movie_plot_synopsys_text_view;
     private Button mMovieFav_button;
     private ImageView mMovieThumbnail_image_view;
-    private LinearLayout mDetailsMovieTitle_container;
 
     /* Holds a "cached" version of this value during the lifecycle of this activity, to avoid unnecessary calls to the DB */
     private Boolean isMarkedAsFavorite;
@@ -86,7 +85,7 @@ public class DetailsActivity extends AppCompatActivity {
         mDetails_movie_plot_synopsys_text_view = (TextView) findViewById(R.id.details_movie_plot_synopsys_text_view);
         mMovieThumbnail_image_view = (ImageView) findViewById(R.id.details_movie_thumbnail_image_view);
         mMovieFav_button = (Button) findViewById(R.id.details_movie_fav_button);
-        mDetailsMovieTitle_container = (LinearLayout) findViewById(R.id.details_movie_title_container);
+
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -155,7 +154,11 @@ public class DetailsActivity extends AppCompatActivity {
         mReceivedBundle = getIntent().getExtras().getBundle(getString(R.string.details_bundle_key));
         mMovieID = mReceivedBundle.getInt(getString(R.string.details_id_key));
         URL url = MovieUtils.getImgURL(mReceivedBundle.getString(getString(R.string.details_img_path_key)));
-        URL backdropURL = MovieUtils.getBackdropImgURL(mReceivedBundle.getString(getString(R.string.details_backdrop_path_key)));
+
+        bindBackdropImg();
+
+        /* Associate image with the imageview */
+        ImageLoader.loadImage(url, mMovieThumbnail_image_view);
 
         /* Bind the views */
         mMovieTitle_text_view.setText(mReceivedBundle.getString(getString(R.string.details_title_key)));
@@ -166,29 +169,9 @@ public class DetailsActivity extends AppCompatActivity {
 
         checkFavoriteStatus();
 
-        /* Associate image with the imageview */
-        ImageLoader.loadImage(url, mMovieThumbnail_image_view);
 
-        /* Add backdrop as background of the title view */
-        Picasso.get().load(String.valueOf(backdropURL)).into(new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    mDetailsMovieTitle_container.setBackground(new BitmapDrawable(getResources(), bitmap));
-                    mDetailsMovieTitle_container.getBackground().setAlpha(120);
-                }
-            }
 
-            @Override
-            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-                e.printStackTrace();
-            }
 
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-            }
-        });
 
         mMovieFav_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -242,6 +225,40 @@ public class DetailsActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    /**
+     * Given that Picasso as a known bug with weak references making the images not loading
+     * (or loading and being garbage collected before being displayed)
+     */
+    private void bindBackdropImg() {
+        final URL backdropURL = MovieUtils.getBackdropImgURL(mReceivedBundle.getString(getString(R.string.details_backdrop_path_key)));
+        final LinearLayout mDetailsMovieTitle_container = (LinearLayout) findViewById(R.id.details_movie_title_container);
+
+        final Target target = new Target() {
+            @Override
+            public void onBitmapLoaded(final Bitmap bitmap, final Picasso.LoadedFrom from) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    mDetailsMovieTitle_container.setBackground(new BitmapDrawable(getResources(), bitmap));
+                    mDetailsMovieTitle_container.getBackground().setAlpha(120);
+
+                }
+            }
+
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        };
+        /* Add backdrop as background of the title view */
+        ImageLoader.loadImage(backdropURL, target);
+
+        mDetailsMovieTitle_container.setTag(target);
     }
 
     private void styleFavButtonAsUnmarked() {

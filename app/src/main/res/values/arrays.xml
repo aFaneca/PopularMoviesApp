@@ -19,6 +19,6 @@
         <item>@string/pref_sort_order_popularity_key</item>
         <item>@string/pref_sort_order_rating_key</item>
         <item>@string/pref_sort_order_favorites_key</item>
-        <item>2</item>
+        <item>3</item>
     </string-array>
 </resources>

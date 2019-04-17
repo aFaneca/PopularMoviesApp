@@ -8,8 +8,6 @@
 
 package com.itsector.popularmoviesapp.utils;
 
-import android.net.Uri;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 

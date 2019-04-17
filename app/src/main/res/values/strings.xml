@@ -49,4 +49,7 @@
     <!-- Share Action Provider -->
     <string name="movie_share_string">Check this out: %s (%d) has %s rating! #ITSector</string>
 
+    <!-- Toasts -->
+    <string name="toast_network_error">Error connecting to the API. Check your internet connection!</string>
+
 </resources>

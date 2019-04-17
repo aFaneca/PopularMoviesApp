@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLException;
 
 /**
  * Created by E936 on 4/12/2019.
@@ -43,7 +44,7 @@ import javax.net.ssl.HttpsURLConnection;
 public class MovieSync implements Constants {
 
 
-    synchronized public static List<Movie> getPopularMovies() {
+    synchronized public static List<Movie> getPopularMovies() throws IOException {
         HttpsURLConnection urlConn = null;
         BufferedReader reader = null;
 
@@ -80,12 +81,13 @@ public class MovieSync implements Constants {
             return getMoviesFromJSon(jsonResponseStr);
 
         } catch (javax.net.ssl.SSLException e){
-
             e.printStackTrace();
+            throw e;
 
         }
         catch (IOException e) {
             e.printStackTrace();
+            throw e;
         } finally {
             if (urlConn != null) urlConn.disconnect();
             if (reader != null) {
@@ -96,12 +98,9 @@ public class MovieSync implements Constants {
                 }
             }
         }
-
-
-        return new ArrayList<Movie>();
     }
 
-    synchronized public static List<Movie> getTopRatedMovies() {
+    synchronized public static List<Movie> getTopRatedMovies() throws IOException{
         HttpsURLConnection urlConn = null;
         BufferedReader reader = null;
 
@@ -139,8 +138,10 @@ public class MovieSync implements Constants {
 
         } catch (javax.net.ssl.SSLException e){
             e.printStackTrace();
+            throw e;
         } catch (IOException e) {
             e.printStackTrace();
+            throw e;
         } finally {
             if (urlConn != null) urlConn.disconnect();
             if (reader != null) {
@@ -151,12 +152,16 @@ public class MovieSync implements Constants {
                 }
             }
         }
-
-
-        return new ArrayList<Movie>();
     }
 
-    synchronized public static Movie getMovie(int movieID) {
+
+    /**
+     * Returns all the info we need for a movie identified by its movieID
+     * @param movieID
+     * @return
+     * @throws IOException
+     */
+    synchronized public static Movie getMovie(int movieID) throws IOException{
         HttpsURLConnection urlConn = null;
         BufferedReader reader = null;
 
@@ -194,8 +199,10 @@ public class MovieSync implements Constants {
 
         } catch (javax.net.ssl.SSLException e){
             e.printStackTrace();
+            throw e;
         } catch (IOException e) {
             e.printStackTrace();
+            throw e;
         } finally {
             if (urlConn != null) urlConn.disconnect();
             if (reader != null) {
@@ -206,12 +213,15 @@ public class MovieSync implements Constants {
                 }
             }
         }
-
-
-        return new Movie(-1, "", "");
     }
 
-    synchronized public static void getMovieVideos(Context context, int movieID, final DetailsActivity.getVideosCallback callback){
+    /**
+     * Returns to the callback method a list of videos associated with a specific movie
+     * @param context
+     * @param movieID
+     * @param callback
+     */
+    public static void getMovieVideos(Context context, int movieID, final DetailsActivity.getVideosCallback callback){
         List<Review> movieReviews = new ArrayList<>();
 
         URL url = APIUtils.getFullURLforAction(API_ACTIONS.API_GET_MOVIE_TRAILERS, movieID + "");
@@ -233,6 +243,37 @@ public class MovieSync implements Constants {
 
         RequestQueueSingleton.getInstance(context).addToRequestQueue(jsonRequest, REQUEST_GET_MOVIE_TRAILERS_TAG);
     }
+
+    /**
+     * Returns to the callback method a list of reviews associated with a specific movie
+     * @param context
+     * @param movieID
+     * @param callback
+     */
+    public static void getMovieReviews(Context context, int movieID, final DetailsActivity.getReviewsCallback callback){
+        List<Review> movieReviews = new ArrayList<>();
+
+        URL url = APIUtils.getFullURLforAction(API_ACTIONS.API_GET_MOVIE_REVIEWS, movieID + "");
+
+        /* Instantiates the RequestQueue*/
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url.toString(), null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                getReviewsFromJSon(response, callback);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        RequestQueueSingleton.getInstance(context).addToRequestQueue(jsonRequest, REQUEST_GET_MOVIE_REVIEWS_TAG);
+    }
+
+    /* HELPER METHODS */
 
     /**
      * Converts the string representing the JSON response and extracts the important data
@@ -266,28 +307,7 @@ public class MovieSync implements Constants {
         callback.getAllVideos(videosList);
     }
 
-    synchronized public static void getMovieReviews(Context context, int movieID, final DetailsActivity.getReviewsCallback callback){
-        List<Review> movieReviews = new ArrayList<>();
 
-        URL url = APIUtils.getFullURLforAction(API_ACTIONS.API_GET_MOVIE_REVIEWS, movieID + "");
-
-        /* Instantiates the RequestQueue*/
-        RequestQueue queue = Volley.newRequestQueue(context);
-
-        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url.toString(), null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                getReviewsFromJSon(response, callback);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-
-       RequestQueueSingleton.getInstance(context).addToRequestQueue(jsonRequest, REQUEST_GET_MOVIE_REVIEWS_TAG);
-    }
 
     /**
      * Converts the string representing the JSON response and extracts the important data
@@ -322,8 +342,15 @@ public class MovieSync implements Constants {
         callback.getAllReviews(reviewsList);
     }
 
+    /**
+     * Returns a trimmed version of the content string, given the REVIEWS_MAX_CHARS restrition
+     * @param content
+     * @return
+     */
     private static String getShortContent(String content) {
         String shortContent = "";
+
+        /* If the content has less chars then the max defined, there's no need to trim it */
         int maxChars = (content.length() <= REVIEWS_MAX_CHARS) ? content.length() : REVIEWS_MAX_CHARS;
 
         shortContent = content.substring(0, maxChars) + "...";
@@ -392,7 +419,6 @@ public class MovieSync implements Constants {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
 
         return moviesList;
     }

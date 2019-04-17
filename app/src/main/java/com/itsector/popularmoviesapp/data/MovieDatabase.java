@@ -17,6 +17,8 @@ import com.itsector.popularmoviesapp.models.Movie;
 import com.itsector.popularmoviesapp.utils.Constants;
 
 /**
+ * Part of Room's implementation architecture
+ * Follows the singleton pattern to provide a single instance of the DB to the whole app
  * Created by E936 on 4/15/2019.
  */
 

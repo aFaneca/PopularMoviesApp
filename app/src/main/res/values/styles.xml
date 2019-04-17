@@ -8,11 +8,14 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- Theme for all activities apart from the main act.
+    Removes the default action bar (to allow the addition of custom toolbars to each one) -->
     <style name="NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <!-- Customize color of navigation drawer icon and back arrow -->
         <item name="colorControlNormal">@android:color/white</item>
+        <item name="android:color">@android:color/white</item>
     </style>
 
 </resources>

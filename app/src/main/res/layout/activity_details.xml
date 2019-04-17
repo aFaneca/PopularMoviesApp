@@ -16,7 +16,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/details_toolbar"
         android:layout_width="match_parent"
@@ -24,15 +23,13 @@
         android:background="?attr/colorPrimary"
         app:titleTextColor="@android:color/white"/>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".activities.DetailsActivity">
 
-
-        <!-- TITLE-->
+        <!-- TITLE WRAPPER -->
         <LinearLayout
             android:id="@+id/details_movie_title_container"
             android:layout_width="match_parent"
@@ -44,6 +41,7 @@
             android:paddingBottom="@dimen/details_title_padding_bottom"
             tools:background="@drawable/ic_launcher_background">
 
+            <!-- TITTLE -->
             <TextView
                 android:id="@+id/details_movie_title_text_view"
                 android:layout_width="wrap_content"
@@ -53,7 +51,7 @@
                 tools:text="Movie Name" />
         </LinearLayout>
 
-        <!-- THUMBNAIL + YEAR + RUNTIME + RATING + FAV BUTTON -->
+        <!-- THUMBNAIL + YEAR + RUNTIME + RATING + FAV BUTTON WRAPPER -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,7 +68,8 @@
                 android:layout_width="@dimen/list_item_img_width"
                 android:layout_height="@dimen/list_item_img_height"
                 tools:background="@color/colorAccent" />
-            <!-- YEAR + RUNTIME + RATING + FAV BUTTON -->
+
+            <!-- YEAR + POPULARITY + RATING + FAV BUTTON WRAPPER -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -79,6 +78,7 @@
                 android:paddingStart="@dimen/details_left_padding"
                 android:paddingLeft="@dimen/details_left_padding">
 
+                <!-- YEAR -->
                 <TextView
                     android:id="@+id/details_movie_year_text_view"
                     android:layout_width="wrap_content"
@@ -90,6 +90,7 @@
                     android:textSize="@dimen/details_top_specs_text_size"
                     tools:text="2015" />
 
+                <!-- POPULARITY -->
                 <TextView
                     android:id="@+id/details_movie_popularity_text_view"
                     android:layout_width="wrap_content"
@@ -100,6 +101,7 @@
                     android:textSize="@dimen/details_top_specs_text_size"
                     tools:text="473.4" />
 
+                <!-- RATING -->
                 <TextView
                     android:id="@+id/details_movie_rating_text_view"
                     android:layout_width="wrap_content"
@@ -110,6 +112,7 @@
                     android:textSize="@dimen/details_top_specs_text_size"
                     tools:text="8.1/10" />
 
+                <!-- FAV BUTTON -->
                 <Button
                     android:id="@+id/details_movie_fav_button"
                     android:layout_width="wrap_content"
@@ -120,7 +123,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- DESCRIPTION -->
+        <!-- DESCRIPTION WRAPPER -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -129,6 +132,7 @@
             android:paddingEnd="@dimen/details_right_padding"
             android:paddingRight="@dimen/details_right_padding">
 
+            <!-- DESCRIPTION -->
             <TextView
                 android:id="@+id/details_movie_plot_synopsys_text_view"
                 android:layout_width="match_parent"
@@ -136,7 +140,7 @@
                 tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempor leo eu ante dictum cursus. Etiam quis convallis massa. Praesent posuere gravida eros quis commodo." />
         </LinearLayout>
 
-        <!-- TRAILERS + REVIEWS LIST -->
+        <!-- TRAILERS + REVIEWS LIST WRAPPER -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -145,12 +149,14 @@
             android:paddingStart="@dimen/details_left_padding"
             android:paddingLeft="@dimen/details_left_padding">
 
+            <!-- VIDEOS LABEL -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/details_trailers"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
+            <!-- VIDEOS LIST -->
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/videos_list_recycler_view"
                 android:layout_width="match_parent"
@@ -166,12 +172,14 @@
                 android:gravity="center"
                 android:text="@string/details_videos_no_videos" />
 
+            <!-- REVIEWS LABEL -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/details_reviews"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
+            <!-- REVIEWS LIST -->
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/reviews_list_recycler_view"
                 android:layout_width="match_parent"

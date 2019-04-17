@@ -11,11 +11,17 @@ package com.itsector.popularmoviesapp.network;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
+import com.itsector.popularmoviesapp.R;
 import com.itsector.popularmoviesapp.models.Movie;
 import com.itsector.popularmoviesapp.utils.Constants;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,14 +44,39 @@ public class SyncTask extends AsyncTask<Void, Void, List<Movie>> implements Cons
 
         switch (sortOrder) {
             case SORT_ORDER_POPULARITY_DESC:
-                return MovieSync.getPopularMovies();
+                try {
+                    return MovieSync.getPopularMovies();
+                } catch (IOException e) {
+                    showToastErrorMessage(context);
+                    return new ArrayList<>();
+                }
             case SORT_ORDER_RATING_DESC:
-                return MovieSync.getTopRatedMovies();
+                try {
+                    return MovieSync.getTopRatedMovies();
+                } catch (IOException e) {
+                    showToastErrorMessage(context);
+                    return new ArrayList<>();
+                }
             /*case SORT_ORDER_FAVORITES:
                 return MovieSync.getFavoriteMovies(context);*/
             default:
-                return MovieSync.getPopularMovies();
+                try {
+                    return MovieSync.getPopularMovies();
+                } catch (IOException e) {
+                    showToastErrorMessage(context);
+                    return new ArrayList<>();
+                }
         }
+    }
+
+    private void showToastErrorMessage(final Context mContext) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Toast toast = Toast.makeText(mContext, context.getString(R.string.toast_network_error), Toast.LENGTH_LONG);
+                toast.show();
+            }
+        });
     }
 
     @Override

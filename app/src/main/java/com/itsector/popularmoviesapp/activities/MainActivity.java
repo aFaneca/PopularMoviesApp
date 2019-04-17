@@ -20,7 +20,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ImageView;
+import android.widget.Toast;
+
 
 import com.itsector.popularmoviesapp.R;
 import com.itsector.popularmoviesapp.models.Movie;
@@ -33,6 +34,7 @@ import com.itsector.popularmoviesapp.utils.MovieUtils;
 import com.itsector.popularmoviesapp.utils.MoviesListViewModel;
 import com.itsector.popularmoviesapp.views.adapters.MoviesListAdapter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +52,14 @@ public class MainActivity extends AppCompatActivity implements Constants {
 
         setupActionBar();
         startSyncTask();
+        setupMoviesListAdapter();
+    }
 
+    /**
+     * Initializes and sets up the recycler view + adapter + view model + livedata
+     * for the movies list
+     */
+    private void setupMoviesListAdapter() {
         mMoviesList_recycler_view = (RecyclerView) findViewById(R.id.movie_list_recycler_view);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, getResources().getInteger(R.integer.recyler_view_videos_num_of_columns));
@@ -72,9 +81,11 @@ public class MainActivity extends AppCompatActivity implements Constants {
                     updateAdapter(movies);
             }
         });
-
     }
 
+    /**
+     * Sets up te toolbar settings for the main activity
+     */
     private void setupActionBar() {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |
                 ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_USE_LOGO);
@@ -87,13 +98,14 @@ public class MainActivity extends AppCompatActivity implements Constants {
 
     /**
      * Chooses a title for the action bar depending on the sort order preferences
+     *
      * @return
      */
     private String getActionBarTitle() {
         String sortOrder = DBUtils.getSortOrderFromSharedPreferences(getApplicationContext());
         String title = "";
 
-        switch(sortOrder){
+        switch (sortOrder) {
             case SORT_ORDER_FAVORITES:
                 title = getString(R.string.app_name_fav);
                 break;
@@ -227,7 +239,16 @@ public class MainActivity extends AppCompatActivity implements Constants {
                 @Override
                 public void run() {
                     Movie originalMovie = movies.get(0);
-                    movies.add(MovieSync.getMovie(originalMovie.getID()));
+                    Movie fullMovie = null;
+                    try {
+                        fullMovie = MovieSync.getMovie(originalMovie.getID());
+                        movies.add(fullMovie);
+                    } catch (IOException e) {
+                        /* Show toast message with the error */
+                        Toast.makeText(getApplicationContext(), getString(R.string.toast_network_error),
+                                Toast.LENGTH_LONG).show();
+                    }
+
                 }
             });
             t.start();

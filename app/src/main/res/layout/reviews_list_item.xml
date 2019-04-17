@@ -7,11 +7,14 @@
     android:orientation="vertical"
     android:background="@drawable/touch_selector">
 
+    <!-- Author Name-->
     <TextView
         android:id="@+id/review_author_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Myles"/>
+
+    <!-- Review Content -->
     <TextView
         android:id="@+id/review_content_text_view"
         android:layout_width="wrap_content"

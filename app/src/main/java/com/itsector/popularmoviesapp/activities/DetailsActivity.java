@@ -24,7 +24,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -80,12 +79,36 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
+        /* Get instance of the view model */
         moviesListViewModel = ViewModelProviders.of(this).get(MoviesListViewModel.class);
 
         setupReviewsListAdapter();
         setupVideosListAdapter();
+        setupToolbar();
 
-        /* Initialize all views */
+        initializeViews();
+
+        bindViews();
+        getReviews();
+        getVideos();
+    }
+
+    /**
+     * Initializes and sets up the toolbar
+     */
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.details_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.details_label);
+    }
+
+    /**
+     * Initializes all the views
+     */
+    private void initializeViews() {
         mMovieTitle_text_view = (TextView) findViewById(R.id.details_movie_title_text_view);
         mMovieYear_text_view = (TextView) findViewById(R.id.details_movie_year_text_view);
         mMoviePopularity_text_view = (TextView) findViewById(R.id.details_movie_popularity_text_view);
@@ -93,17 +116,6 @@ public class DetailsActivity extends AppCompatActivity {
         mDetails_movie_plot_synopsys_text_view = (TextView) findViewById(R.id.details_movie_plot_synopsys_text_view);
         mMovieThumbnail_image_view = (ImageView) findViewById(R.id.details_movie_thumbnail_image_view);
         mMovieFav_button = (Button) findViewById(R.id.details_movie_fav_button);
-
-        Toolbar toolbar = findViewById(R.id.details_toolbar);
-
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.details_label);
-
-        bindViews();
-        getReviews();
-        getVideos();
     }
 
 
@@ -129,14 +141,22 @@ public class DetailsActivity extends AppCompatActivity {
         return shareIntent;
     }
 
+    /**
+     * Returns a string representation of what's going to be shared using the ShareActionProvider
+     *
+     * @return string
+     */
     private String getMovieShareStr() {
         String movieName = mReceivedBundle.getString(getString(R.string.details_title_key));
         int year = mReceivedBundle.getInt(getString(R.string.details_year_key));
         String rating = getString(R.string.details_rating, mReceivedBundle.getDouble(getString(R.string.details_rating_key)));
 
-        return getString(R.string.movie_share_string, movieName, year, rating) ;
+        return getString(R.string.movie_share_string, movieName, year, rating);
     }
 
+    /**
+     * Initialize & setup the recycler view + adapter for the videos list
+     */
     private void setupVideosListAdapter() {
         /* Initialize the adapter + recycler view */
         mVideosList_recycler_view = (RecyclerView) findViewById(R.id.videos_list_recycler_view);
@@ -146,6 +166,9 @@ public class DetailsActivity extends AppCompatActivity {
         mVideosList_recycler_view.setAdapter(mMovieVideosAdapter);
     }
 
+    /**
+     * Initialize & setup the recycler view + adapter for the reviews list
+     */
     private void setupReviewsListAdapter() {
         /* Initialize the adapter + recycler view */
         mReviewsList_recycler_view = (RecyclerView) findViewById(R.id.reviews_list_recycler_view);
@@ -162,6 +185,7 @@ public class DetailsActivity extends AppCompatActivity {
     public interface getVideosCallback {
         public void getAllVideos(List<Video> videos);
     }
+
     private void getVideos() {
         MovieSync.getMovieVideos(this, mMovieID, new getVideosCallback() {
             @Override
@@ -178,6 +202,7 @@ public class DetailsActivity extends AppCompatActivity {
     public interface getReviewsCallback {
         public void getAllReviews(List<Review> reviews);
     }
+
     private void getReviews() {
         MovieSync.getMovieReviews(this, mMovieID, new getReviewsCallback() {
             @Override
@@ -209,10 +234,6 @@ public class DetailsActivity extends AppCompatActivity {
         mMovieRating_text_view.setText(getString(R.string.details_rating, mReceivedBundle.getDouble(getString(R.string.details_rating_key))));
 
         checkFavoriteStatus();
-
-
-
-
 
         mMovieFav_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -270,8 +291,8 @@ public class DetailsActivity extends AppCompatActivity {
 
     /**
      * Given that Picasso as a known bug with weak references making the images not loading
-     * (or loading and being garbage collected before being displayed)
-     *
+     * (or loading and being garbage collected before being displayed), a different approach
+     * is required loading the backdrop image
      * Context: https://stackoverflow.com/a/26918731
      */
     private void bindBackdropImg() {
@@ -317,7 +338,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     /**
      * Checks if the movie is marked as favorite or not &
-     * reflects that status in the "Mark as favorite" button
+     * reflects that status in the "Mark as Favorite" button
      */
     private void checkFavoriteStatus() {
         /* Check if this movie's ID is present in the DB */
@@ -335,10 +356,8 @@ public class DetailsActivity extends AppCompatActivity {
                             styleFavButtonAsMarked();
                         }
                     });
-
                 } else {
                     isMarkedAsFavorite = false;
-
                     /* Anything that updates the UI needs to run in the main thread */
                     runOnUiThread(new Runnable() {
                         @Override
@@ -346,15 +365,12 @@ public class DetailsActivity extends AppCompatActivity {
                             styleFavButtonAsUnmarked();
                         }
                     });
-
                 }
-
             }
 
 
         });
     }
-
 
 
     /**
@@ -368,7 +384,7 @@ public class DetailsActivity extends AppCompatActivity {
         mMovieVideosAdapter = new MovieVideosAdapter(dataset, new MovieVideosAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Video video) {
-                if(video.getSite().equals(Constants.YOUTUBE_SITE_LABEL))
+                if (video.getSite().equals(Constants.YOUTUBE_SITE_LABEL))
                     openYoutubeVideoIntent(video);
             }
         });
@@ -379,6 +395,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     /**
      * Opens the review's URL in the web browser through an intent
+     *
      * @param review
      */
     private void openReviewInBrowserIntent(Review review) {
@@ -389,16 +406,17 @@ public class DetailsActivity extends AppCompatActivity {
 
     /**
      * Tries to open the video in the youtube app using an intent.
-     * If it can't, try to open via the web browser
+     * If it can't, tries to open via the web browser
+     *
      * @param video
      */
-    private void openYoutubeVideoIntent(Video video){
+    private void openYoutubeVideoIntent(Video video) {
         Intent ytAppIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + video.getKey()));
         Intent ytWebIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.YOUTUBE_VIDEOS_BASE_URL + video.getKey()));
 
-        try{
+        try {
             startActivity(ytAppIntent);
-        }catch (ActivityNotFoundException ex){
+        } catch (ActivityNotFoundException ex) {
             /* If it can't open the app, tries to open through the browser */
             startActivity(ytWebIntent);
         }
@@ -431,9 +449,9 @@ public class DetailsActivity extends AppCompatActivity {
     private void updateReviewsAdapter(List<Review> updatedDataset) {
         mMovieReviewsAdapter.swap(updatedDataset);
 
-        if(updatedDataset.isEmpty()){
+        if (updatedDataset.isEmpty()) {
             findViewById(R.id.details_reviews_no_reviews).setVisibility(View.VISIBLE);
-        }else{
+        } else {
             findViewById(R.id.details_reviews_no_reviews).setVisibility(View.GONE);
         }
     }
@@ -446,9 +464,9 @@ public class DetailsActivity extends AppCompatActivity {
     private void updateVideosAdapter(List<Video> updatedDataset) {
         mMovieVideosAdapter.swap(updatedDataset);
 
-        if(updatedDataset.isEmpty()){
+        if (updatedDataset.isEmpty()) {
             findViewById(R.id.details_videos_no_videos).setVisibility(View.VISIBLE);
-        }else{
+        } else {
             findViewById(R.id.details_videos_no_videos).setVisibility(View.GONE);
         }
     }

@@ -20,6 +20,8 @@ import com.itsector.popularmoviesapp.models.Movie;
 import java.util.List;
 
 /**
+ * Part of Room's implementation architecture
+ * Defines all the ways we can access and manage the movies Data Access Objects
  * Created by E936 on 4/15/2019.
  */
 

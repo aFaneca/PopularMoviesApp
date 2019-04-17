@@ -18,9 +18,13 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 
 import com.itsector.popularmoviesapp.R;
@@ -38,10 +42,12 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_settings);
-       /* setSupportActionBar((Toolbar) findViewById(R.id.settings_toolbar));*/
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.settings_toolbar);
+
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setTitle(R.string.action_settings);
 
         addPreferencesFromResource(R.xml.pref_general);
@@ -49,6 +55,23 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_sort_order_key)));
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_settings, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == android.R.id.home)
+            onBackPressed();
+
+        return super.onOptionsItemSelected(item);
+    }
 
     /**
      * Attaches a listener so the summary is always updated with the preference value.

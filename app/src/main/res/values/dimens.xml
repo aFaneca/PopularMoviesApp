@@ -5,7 +5,9 @@
     <dimen name="list_item_margin">10dp</dimen>
     <dimen name="details_top_specs_margin_bottom">10dp</dimen>
     <dimen name="details_trailers_margin_top">10dp</dimen>
-
+    <dimen name="details_top_specs_margin_top">-50dp</dimen>
+    <dimen name="details_reviews_no_review_margin_bottom">20dp</dimen>
+    <dimen name="details_videos_no_video_margin_bottom">20dp</dimen>
 
     <!-- Paddings -->
     <dimen name="details_left_padding">20dp</dimen>
@@ -13,13 +15,23 @@
     <dimen name="details_top_specs_padding_top">10dp</dimen>
     <dimen name="details_top_specs_padding">4dp</dimen>
     <dimen name="details_fav_btn_padding">8dp</dimen>
+    <dimen name="details_reviews_item_padding">8dp</dimen>
+    <dimen name="details_title_padding_top">50dp</dimen>
+    <dimen name="details_title_padding_bottom">50dp</dimen>
+    <dimen name="details_top_specs_padding_bottom">20dp</dimen>
+
 
     <!-- ImageViews Widths & Heights -->
     <dimen name="list_item_img_width">185dp</dimen>
     <dimen name="list_item_img_height">277dp</dimen>
+    <dimen name="details_reviews_img_width">50dp</dimen>
+    <dimen name="details_reviews_img_height">@dimen/details_reviews_img_width</dimen>
+
 
     <!-- Text Sizes -->
     <dimen name="details_top_specs_text_size">20sp</dimen>
+    <dimen name="details_title_text_size">50sp</dimen>
+
 
 
 

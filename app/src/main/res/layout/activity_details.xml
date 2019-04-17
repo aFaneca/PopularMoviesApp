@@ -26,8 +26,8 @@
             android:background="@color/colorPrimary"
             android:paddingStart="@dimen/details_left_padding"
             android:paddingLeft="@dimen/details_left_padding"
-            android:paddingTop="50dp"
-            android:paddingBottom="50dp"
+            android:paddingTop="@dimen/details_title_padding_top"
+            android:paddingBottom="@dimen/details_title_padding_bottom"
             tools:background="@drawable/ic_launcher_background">
 
             <TextView
@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:textSize="50sp"
+                android:textSize="@dimen/details_title_text_size"
                 tools:text="Movie Name" />
         </LinearLayout>
 
@@ -46,22 +46,27 @@
             android:orientation="horizontal"
             android:paddingStart="@dimen/details_left_padding"
             android:paddingLeft="@dimen/details_left_padding"
-            android:paddingTop="10dp"
-            android:paddingBottom="20dp">
+            android:paddingTop="@dimen/details_top_specs_padding_top"
+            android:paddingBottom="@dimen/details_top_specs_padding_bottom"
+            android:layout_marginTop="@dimen/details_top_specs_margin_top"
+            android:background="color"
+            >
 
             <!-- THUMBNAIL -->
             <ImageView
                 android:id="@+id/details_movie_thumbnail_image_view"
                 android:layout_width="@dimen/list_item_img_width"
                 android:layout_height="@dimen/list_item_img_height"
-                tools:background="@color/colorAccent" />
+                tools:background="@color/colorAccent"
+                />
             <!-- YEAR + RUNTIME + RATING + FAV BUTTON -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:paddingStart="@dimen/details_left_padding"
-                android:paddingLeft="@dimen/details_left_padding">
+                android:paddingLeft="@dimen/details_left_padding"
+                android:layout_marginTop="50dp">
 
                 <TextView
                     android:id="@+id/details_movie_year_text_view"
@@ -147,7 +152,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/details_videos_no_videos"
                 android:gravity="center"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="@dimen/details_videos_no_video_margin_bottom"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -168,8 +173,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/details_reviews_no_reviews"
                 android:gravity="center"
-                android:visibility="gone"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="@dimen/details_reviews_no_review_margin_bottom"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

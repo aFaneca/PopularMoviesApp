@@ -230,6 +230,8 @@ public class DetailsActivity extends AppCompatActivity {
     /**
      * Given that Picasso as a known bug with weak references making the images not loading
      * (or loading and being garbage collected before being displayed)
+     *
+     * Context: https://stackoverflow.com/a/26918731
      */
     private void bindBackdropImg() {
         final URL backdropURL = MovieUtils.getBackdropImgURL(mReceivedBundle.getString(getString(R.string.details_backdrop_path_key)));
@@ -255,6 +257,7 @@ public class DetailsActivity extends AppCompatActivity {
 
             }
         };
+
         /* Add backdrop as background of the title view */
         ImageLoader.loadImage(backdropURL, target);
 

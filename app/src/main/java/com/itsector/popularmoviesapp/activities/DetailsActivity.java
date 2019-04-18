@@ -20,8 +20,11 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
+import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ShareActionProvider;
+import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -160,11 +163,16 @@ public class DetailsActivity extends AppCompatActivity {
     private void setupVideosListAdapter() {
         /* Initialize the adapter + recycler view */
         mVideosList_recycler_view = (RecyclerView) findViewById(R.id.videos_list_recycler_view);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+
         mVideosList_recycler_view.setLayoutManager(linearLayoutManager);
         getNewVideosListAdapter(new ArrayList<Video>());
         mVideosList_recycler_view.setAdapter(mMovieVideosAdapter);
+
+        SnapHelper helper = new PagerSnapHelper();
+        helper.attachToRecyclerView(mVideosList_recycler_view);
     }
 
     /**

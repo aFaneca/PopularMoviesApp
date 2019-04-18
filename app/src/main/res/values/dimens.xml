@@ -9,6 +9,7 @@
     <dimen name="details_inner_top_specs_margin_top">50dp</dimen>
     <dimen name="details_reviews_no_review_margin_bottom">20dp</dimen>
     <dimen name="details_videos_no_video_margin_bottom">20dp</dimen>
+    <dimen name="details_reviews_margin_top">20dp</dimen>
 
     <!-- Paddings -->
     <dimen name="details_left_padding">20dp</dimen>
@@ -32,6 +33,9 @@
     <!-- Text Sizes -->
     <dimen name="details_top_specs_text_size">20sp</dimen>
     <dimen name="details_title_text_size">50sp</dimen>
+
+    <!-- Scrollbars -->
+    <dimen name="details_videos_scrollbar_width">2dp</dimen>
 
 
 

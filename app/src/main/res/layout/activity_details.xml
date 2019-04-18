@@ -161,8 +161,8 @@
                     android:id="@+id/videos_list_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scrollbarSize="5dp"
-                    android:scrollbarThumbVertical="@android:color/darker_gray"
+                    android:scrollbarSize="@dimen/details_videos_scrollbar_width"
+                    android:scrollbarThumbHorizontal="@drawable/vertical_scrollbar"
                     android:scrollbars="horizontal">
 
                 </android.support.v7.widget.RecyclerView>
@@ -179,6 +179,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/details_reviews_margin_top"
                     android:text="@string/details_reviews"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 

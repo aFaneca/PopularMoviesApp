@@ -36,9 +36,9 @@ public class APIUtils implements Constants {
     public static URL getFullURLforAction(API_ACTIONS action, String param) {
         switch (action) {
             case API_GET_POPULAR_MOVIES:
-                return buildURLForPopularMovies();
+                return buildURLForPopularMovies(param);
             case API_GET_TOP_RATED_MOVIES:
-                return buildURLForTopRatedMovies();
+                return buildURLForTopRatedMovies(param);
             case API_GET_MOVIE:
                 return buildURLForMovie(param);
             case API_GET_MOVIE_REVIEWS:
@@ -114,6 +114,16 @@ public class APIUtils implements Constants {
         return fullURL;
     }
 
+    private static URL buildURLForTopRatedMovies(String pageNumber) {
+        URL fullURL = null;
+        try {
+            fullURL = new URL(BASE_API_URL + PATH_TOP_RATED_MOVIES + getQueryParamForAPIKey() + getQueryParamForPagination(pageNumber));
+        } catch (MalformedURLException e1) {
+            e1.printStackTrace();
+        }
+        return fullURL;
+    }
+
     /**
      * Builds and returns the full URL to the API request for popular movies
      *
@@ -129,7 +139,21 @@ public class APIUtils implements Constants {
         return fullURL;
     }
 
+    private static URL buildURLForPopularMovies(String pageNumber) {
+        URL fullURL = null;
+        try {
+            fullURL = new URL(BASE_API_URL + PATH_POPULAR_MOVIES + getQueryParamForAPIKey() + getQueryParamForPagination(pageNumber));
+        } catch (MalformedURLException e1) {
+            e1.printStackTrace();
+        }
+        return fullURL;
+    }
+
     private static String getQueryParamForAPIKey() {
         return "?api_key=" + API_KEY;
+    }
+
+    private static String getQueryParamForPagination(String pageNumber){
+        return "&page=" + pageNumber;
     }
 }

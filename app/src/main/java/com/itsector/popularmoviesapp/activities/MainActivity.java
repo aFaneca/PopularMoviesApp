@@ -11,6 +11,7 @@ package com.itsector.popularmoviesapp.activities;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import com.itsector.popularmoviesapp.R;
 import com.itsector.popularmoviesapp.models.Movie;
+import com.itsector.popularmoviesapp.models.MoviesFetch;
 import com.itsector.popularmoviesapp.network.AsyncResponse;
 import com.itsector.popularmoviesapp.network.MovieSync;
 import com.itsector.popularmoviesapp.network.SyncTask;
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements Constants {
     private List<Movie> mMoviesList;
     private List<Movie> mFavoriteMovies;
     private MoviesListViewModel moviesListViewModel;
+    private int moviesListTotalPages;
+    private int moviesListCurrentPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,38 @@ public class MainActivity extends AppCompatActivity implements Constants {
         setupActionBar();
         startSyncTask();
         setupMoviesListAdapter();
+
+        mMoviesList_recycler_view.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                /* If it can't scroll vertically anymore, it means we reached the bottom */
+                if(!recyclerView.canScrollVertically(1)){
+                    if(moviesListCurrentPage < moviesListTotalPages)
+                        getMoreMovies();
+                }
+            }
+        });
+    }
+
+    private void getMoreMovies() {
+        /* Checks Shared Preferences */
+        String sortOrder = DBUtils.getSortOrderFromSharedPreferences(getApplicationContext());
+
+        if (!sortOrder.equals(SORT_ORDER_FAVORITES)) {
+            SyncTask task = new SyncTask(new AsyncResponse() {
+                @Override
+                public void onGetMoviesCompleted(MoviesFetch moviesFetch) {
+                    mMoviesList.addAll(moviesFetch.getMovies());
+                    moviesListCurrentPage = moviesFetch.getmCurrentPage();
+                    moviesListTotalPages = moviesFetch.getmTotalPages();
+
+                    updateAdapter(mMoviesList);
+                }
+            }, this);
+            task.execute(new Integer[]{++moviesListCurrentPage});
+        }
     }
 
     /**
@@ -170,8 +206,11 @@ public class MainActivity extends AppCompatActivity implements Constants {
         if (!sortOrder.equals(SORT_ORDER_FAVORITES)) {
             SyncTask task = new SyncTask(new AsyncResponse() {
                 @Override
-                public void onGetMoviesCompleted(List<Movie> moviesList) {
-                    mMoviesList = moviesList;
+                public void onGetMoviesCompleted(MoviesFetch moviesFetch) {
+                    mMoviesList = moviesFetch.getMovies();
+                    moviesListCurrentPage = moviesFetch.getmCurrentPage();
+                    moviesListTotalPages = moviesFetch.getmTotalPages();
+
                     updateAdapter(mMoviesList);
                 }
             }, this);
@@ -289,4 +328,6 @@ public class MainActivity extends AppCompatActivity implements Constants {
                 .putExtra(getString(R.string.details_bundle_key), args);
         startActivity(detailsIntent);
     }
+
+
 }

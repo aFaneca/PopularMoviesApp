@@ -161,6 +161,7 @@ public class DetailsActivity extends AppCompatActivity {
         /* Initialize the adapter + recycler view */
         mVideosList_recycler_view = (RecyclerView) findViewById(R.id.videos_list_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mVideosList_recycler_view.setLayoutManager(linearLayoutManager);
         getNewVideosListAdapter(new ArrayList<Video>());
         mVideosList_recycler_view.setAdapter(mMovieVideosAdapter);
@@ -173,6 +174,7 @@ public class DetailsActivity extends AppCompatActivity {
         /* Initialize the adapter + recycler view */
         mReviewsList_recycler_view = (RecyclerView) findViewById(R.id.reviews_list_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        /*linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);*/
         mReviewsList_recycler_view.setLayoutManager(linearLayoutManager);
         getNewReviewsListAdapter(new ArrayList<Review>());
         mReviewsList_recycler_view.setAdapter(mMovieReviewsAdapter);

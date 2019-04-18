@@ -18,6 +18,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.itsector.popularmoviesapp.activities.DetailsActivity;
 import com.itsector.popularmoviesapp.models.Movie;
+import com.itsector.popularmoviesapp.models.MoviesFetch;
 import com.itsector.popularmoviesapp.models.Review;
 import com.itsector.popularmoviesapp.models.Video;
 import com.itsector.popularmoviesapp.utils.APIUtils;
@@ -44,14 +45,14 @@ import javax.net.ssl.SSLException;
 public class MovieSync implements Constants {
 
 
-    synchronized public static List<Movie> getPopularMovies() throws IOException {
+    synchronized public static MoviesFetch getPopularMovies(int pageNumber) throws IOException {
         HttpsURLConnection urlConn = null;
         BufferedReader reader = null;
 
         /* Will contain the JSON response */
         String jsonResponseStr = null;
 
-        URL requestURL = APIUtils.getFullURLforAction(API_ACTIONS.API_GET_POPULAR_MOVIES);
+        URL requestURL = APIUtils.getFullURLforAction(API_ACTIONS.API_GET_POPULAR_MOVIES, String.valueOf(pageNumber));
 
         /* Make the request */
         try {
@@ -62,7 +63,7 @@ public class MovieSync implements Constants {
             /* Read the input stream into a stream */
             InputStream inputStream = urlConn.getInputStream();
             StringBuffer buffer = new StringBuffer();
-            if (inputStream == null) return new ArrayList<Movie>();
+            if (inputStream == null) return new MoviesFetch(0, 0, new ArrayList<Movie>());
 
             reader = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -73,19 +74,18 @@ public class MovieSync implements Constants {
                 buffer.append(line + "/n");
             }
 
-            if (buffer.length() == 0) return new ArrayList<Movie>();
+            if (buffer.length() == 0) return new MoviesFetch(0, 0, new ArrayList<Movie>());
 
             /* Convert buffer into a string */
             jsonResponseStr = buffer.toString();
 
-            return getMoviesFromJSon(jsonResponseStr);
+            return new MoviesFetch(getPageNumberFromJson(jsonResponseStr), getTotalPagesFromJson(jsonResponseStr), getMoviesFromJSon(jsonResponseStr));
 
-        } catch (javax.net.ssl.SSLException e){
+        } catch (javax.net.ssl.SSLException e) {
             e.printStackTrace();
             throw e;
 
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             throw e;
         } finally {
@@ -100,14 +100,14 @@ public class MovieSync implements Constants {
         }
     }
 
-    synchronized public static List<Movie> getTopRatedMovies() throws IOException{
+    synchronized public static MoviesFetch getTopRatedMovies(int pageNumber) throws IOException {
         HttpsURLConnection urlConn = null;
         BufferedReader reader = null;
 
         /* Will contain the JSON response */
         String jsonResponseStr = null;
 
-        URL requestURL = APIUtils.getFullURLforAction(API_ACTIONS.API_GET_TOP_RATED_MOVIES);
+        URL requestURL = APIUtils.getFullURLforAction(API_ACTIONS.API_GET_TOP_RATED_MOVIES, String.valueOf(pageNumber));
 
         /* Make the request */
         try {
@@ -118,7 +118,7 @@ public class MovieSync implements Constants {
             /* Read the input stream into a stream */
             InputStream inputStream = urlConn.getInputStream();
             StringBuffer buffer = new StringBuffer();
-            if (inputStream == null) return new ArrayList<Movie>();
+            if (inputStream == null) return new MoviesFetch(0, 0, new ArrayList<Movie>());
 
             reader = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -129,14 +129,14 @@ public class MovieSync implements Constants {
                 buffer.append(line + "/n");
             }
 
-            if (buffer.length() == 0) return new ArrayList<Movie>();
+            if (buffer.length() == 0) return new MoviesFetch(0, 0, new ArrayList<Movie>());
 
             /* Convert buffer into a string */
             jsonResponseStr = buffer.toString();
 
-            return getMoviesFromJSon(jsonResponseStr);
+            return new MoviesFetch(getPageNumberFromJson(jsonResponseStr), getTotalPagesFromJson(jsonResponseStr), getMoviesFromJSon(jsonResponseStr));
 
-        } catch (javax.net.ssl.SSLException e){
+        } catch (javax.net.ssl.SSLException e) {
             e.printStackTrace();
             throw e;
         } catch (IOException e) {
@@ -157,11 +157,12 @@ public class MovieSync implements Constants {
 
     /**
      * Returns all the info we need for a movie identified by its movieID
+     *
      * @param movieID
      * @return
      * @throws IOException
      */
-    synchronized public static Movie getMovie(int movieID) throws IOException{
+    synchronized public static Movie getMovie(int movieID) throws IOException {
         HttpsURLConnection urlConn = null;
         BufferedReader reader = null;
 
@@ -197,7 +198,7 @@ public class MovieSync implements Constants {
 
             return getSingleMovieFromJson(jsonResponseStr);
 
-        } catch (javax.net.ssl.SSLException e){
+        } catch (javax.net.ssl.SSLException e) {
             e.printStackTrace();
             throw e;
         } catch (IOException e) {
@@ -217,11 +218,12 @@ public class MovieSync implements Constants {
 
     /**
      * Returns to the callback method a list of videos associated with a specific movie
+     *
      * @param context
      * @param movieID
      * @param callback
      */
-    public static void getMovieVideos(Context context, int movieID, final DetailsActivity.getVideosCallback callback){
+    public static void getMovieVideos(Context context, int movieID, final DetailsActivity.getVideosCallback callback) {
         List<Review> movieReviews = new ArrayList<>();
 
         URL url = APIUtils.getFullURLforAction(API_ACTIONS.API_GET_MOVIE_TRAILERS, movieID + "");
@@ -246,11 +248,12 @@ public class MovieSync implements Constants {
 
     /**
      * Returns to the callback method a list of reviews associated with a specific movie
+     *
      * @param context
      * @param movieID
      * @param callback
      */
-    public static void getMovieReviews(Context context, int movieID, final DetailsActivity.getReviewsCallback callback){
+    public static void getMovieReviews(Context context, int movieID, final DetailsActivity.getReviewsCallback callback) {
         List<Review> movieReviews = new ArrayList<>();
 
         URL url = APIUtils.getFullURLforAction(API_ACTIONS.API_GET_MOVIE_REVIEWS, movieID + "");
@@ -308,7 +311,6 @@ public class MovieSync implements Constants {
     }
 
 
-
     /**
      * Converts the string representing the JSON response and extracts the important data
      *
@@ -344,6 +346,7 @@ public class MovieSync implements Constants {
 
     /**
      * Returns a trimmed version of the content string, given the REVIEWS_MAX_CHARS restrition
+     *
      * @param content
      * @return
      */
@@ -421,5 +424,35 @@ public class MovieSync implements Constants {
         }
 
         return moviesList;
+    }
+
+    /**
+     * Converts the string representing the JSON response and extracts the important data
+     *
+     * @param jsonResponseStr
+     */
+    private static int getPageNumberFromJson(String jsonResponseStr) {
+        try {
+            JSONObject resultsJson = new JSONObject(jsonResponseStr);
+            return resultsJson.getInt(API_POPULAR_CURRENT_PAGE);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * Converts the string representing the JSON response and extracts the important data
+     *
+     * @param jsonResponseStr
+     */
+    private static int getTotalPagesFromJson(String jsonResponseStr) {
+        try {
+            JSONObject resultsJson = new JSONObject(jsonResponseStr);
+            return resultsJson.getInt(API_POPULAR_TOTAL_PAGES);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 }

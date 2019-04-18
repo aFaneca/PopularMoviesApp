@@ -27,6 +27,8 @@ public interface Constants {
     String API_POPULAR_VOTE_AVERAGE = "vote_average";
     String API_POPULAR_RELEASE_DATE = "release_date";
     String API_POPULAR_POPULARITY = "popularity";
+    String API_POPULAR_TOTAL_PAGES = "total_pages";
+    String API_POPULAR_CURRENT_PAGE = "page";
 
     /* NAMES OF JSON OBJECTS RELEVANT FOR REVIEWS */
     String API_REVIEWS_BASE_OBJ = "results";
@@ -42,6 +44,7 @@ public interface Constants {
     String API_VIDEOS_ID = "id";
     String API_VIDEOS_TYPE = "type";
     String API_VIDEOS_SITE = "site";
+
 
 
 

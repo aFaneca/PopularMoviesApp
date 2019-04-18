@@ -9,6 +9,7 @@
 package com.itsector.popularmoviesapp.network;
 
 import com.itsector.popularmoviesapp.models.Movie;
+import com.itsector.popularmoviesapp.models.MoviesFetch;
 
 import java.util.List;
 
@@ -17,5 +18,5 @@ import java.util.List;
  */
 public interface AsyncResponse {
 
-    void onGetMoviesCompleted(List<Movie> moviesList);
+    void onGetMoviesCompleted(MoviesFetch moviesFetch);
 }

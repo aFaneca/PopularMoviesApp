@@ -64,4 +64,7 @@
     <!-- Toasts -->
     <string name="toast_network_error">Error connecting to the API. Check your internet connection!</string>
 
+    <!-- Edit Text Hints -->
+    <string name="search_box_hint">Type your search here...</string>
+
 </resources>

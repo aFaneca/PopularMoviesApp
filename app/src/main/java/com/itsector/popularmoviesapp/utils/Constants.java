@@ -88,4 +88,7 @@ public interface Constants {
     /* YOUTUBE PLAYER API */
     String YOUTUBE_PLAYER_API_KEY = "AIzaSyAgEWM857oL4zredbosxHifLiWMoah09Oc";
 
+    /* GENERAL BUNDLE KEYS */
+    String MAIN_SEARCH_BOX_TEXT_KEY = "MAIN_SEARCH_BOX_TEXT_KEY";
+
 }

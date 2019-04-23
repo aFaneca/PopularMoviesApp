@@ -11,7 +11,6 @@ package com.itsector.popularmoviesapp.activities;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,14 +18,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SnapHelper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.Toast;
-
 
 import com.itsector.popularmoviesapp.R;
 import com.itsector.popularmoviesapp.models.Movie;
@@ -47,20 +46,26 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements Constants {
     private RecyclerView mMoviesList_recycler_view;
     private MoviesListAdapter mMoviesListAdapter;
+    private EditText searchBox_editText;
     private List<Movie> mMoviesList;
     private List<Movie> mFavoriteMovies;
     private MoviesListViewModel moviesListViewModel;
     private int moviesListTotalPages;
     private int moviesListCurrentPage;
+    private boolean listIsBeingFiltered;
+    private String searchBoxText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        listIsBeingFiltered = false;
+
         setupActionBar();
         startSyncTask();
         setupMoviesListAdapter();
+        setupSearchBox();
 
         mMoviesList_recycler_view.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -68,12 +73,100 @@ public class MainActivity extends AppCompatActivity implements Constants {
                 super.onScrolled(recyclerView, dx, dy);
 
                 /* If it can't scroll vertically anymore, it means we reached the bottom */
-                if(!recyclerView.canScrollVertically(1)){
-                    if(moviesListCurrentPage < moviesListTotalPages)
+                if (!recyclerView.canScrollVertically(1) && !listIsBeingFiltered) {
+                    if (moviesListCurrentPage < moviesListTotalPages)
                         getMoreMovies();
                 }
             }
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        outState.putString(MAIN_SEARCH_BOX_TEXT_KEY, searchBoxText);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState.getString(MAIN_SEARCH_BOX_TEXT_KEY) != null)
+            searchBoxText = savedInstanceState.getString(MAIN_SEARCH_BOX_TEXT_KEY);
+            searchBox_editText.setText(searchBoxText);
+    }
+
+    /**
+     * Initializes the search box (editText) & its listener
+     */
+    private void setupSearchBox() {
+        searchBox_editText = (EditText) findViewById(R.id.search_box_edit_text);
+        searchBox_editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                searchBoxText = s.toString();
+                updateAdapter(filterList(searchBoxText));
+            }
+        });
+
+    }
+
+    /**
+     * Returns a filtered list of movies, according to the filtering expression provided
+     *
+     * @param expression
+     * @return
+     */
+    private List<Movie> filterList(String expression) {
+        List<Movie> filteredList = new ArrayList<>();
+
+        if (mMoviesList == null && mFavoriteMovies == null) return filteredList;
+
+        listIsBeingFiltered = true;
+
+        String sortOrder = DBUtils.getSortOrderFromSharedPreferences(this);
+        if (sortOrder.equals(SORT_ORDER_FAVORITES)) {
+            if (mFavoriteMovies == null) return filteredList;
+
+            /* If there's no expression, return the whole list */
+            if (expression == null || expression.isEmpty()) {
+                listIsBeingFiltered = false;
+
+                return mFavoriteMovies;
+            }
+
+            /* Filter the list */
+            for (Movie movie : mFavoriteMovies) {
+                if (movie.getOriginalTitle().toLowerCase().contains(expression.toLowerCase()))
+                    filteredList.add(movie);
+            }
+        } else {
+            if (mMoviesList == null) return filteredList;
+            /* If there's no expression, return the whole list */
+            if (expression == null || expression.isEmpty()) {
+                listIsBeingFiltered = false;
+
+                return mMoviesList;
+            }
+
+            /* Filter the list */
+            for (Movie movie : mMoviesList) {
+                if (movie.getOriginalTitle().toLowerCase().contains(expression.toLowerCase()))
+                    filteredList.add(movie);
+            }
+        }
+
+        return filteredList;
     }
 
     private void getMoreMovies() {
@@ -216,7 +309,7 @@ public class MainActivity extends AppCompatActivity implements Constants {
                     moviesListCurrentPage = moviesFetch.getmCurrentPage();
                     moviesListTotalPages = moviesFetch.getmTotalPages();
 
-                    updateAdapter(mMoviesList);
+                    updateAdapter(filterList((searchBoxText != null) ? searchBoxText : ""));
                 }
             }, this);
             task.execute();
@@ -229,6 +322,7 @@ public class MainActivity extends AppCompatActivity implements Constants {
      * @param updatedDataset
      */
     private void updateAdapter(List<Movie> updatedDataset) {
+        if (updatedDataset == null) return;
         mMoviesListAdapter.swap(updatedDataset);
     }
 

@@ -44,6 +44,9 @@
     <string name="pref_videos_external_label">External Player</string>
     <string name="pref_videos_external_key" translatable="false">pref_videos_external_key</string>
 
+    <string name="pref_category_sorting_label">Sorting</string>
+    <string name="pref_category_player_label">Player</string>
+
 
 
 

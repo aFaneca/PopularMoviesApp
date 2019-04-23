@@ -16,11 +16,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ShareActionProvider;
@@ -35,6 +35,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.itsector.popularmoviesapp.R;
+import com.itsector.popularmoviesapp.fragments.VideoPlayerDialog;
 import com.itsector.popularmoviesapp.models.Movie;
 import com.itsector.popularmoviesapp.models.Review;
 import com.itsector.popularmoviesapp.models.Video;
@@ -395,11 +396,20 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(Video video) {
                 if (video.getSite().equals(Constants.YOUTUBE_SITE_LABEL))
-                    openYoutubeVideoIntent(video);
+                   /* openYoutubeVideoIntent(video);*/
+                    showVideoPlayerDialog(video);
             }
         });
 
         return mMovieVideosAdapter;
+    }
+
+    private void showVideoPlayerDialog(Video video) {
+        DialogFragment dialog = new VideoPlayerDialog();
+        ((VideoPlayerDialog) dialog).setVideoID(video.getKey());
+        dialog.show(getSupportFragmentManager(), "tag");
+
+
     }
 
 

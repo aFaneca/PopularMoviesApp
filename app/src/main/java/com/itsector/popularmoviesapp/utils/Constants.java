@@ -77,4 +77,8 @@ public interface Constants {
     String YOUTUBE_VIDEOS_BASE_URL = "https://www.youtube.com/watch?v=";
     String YOUTUBE_SITE_LABEL = "YouTube";
     int REVIEWS_MAX_CHARS = 140;
+
+    /* YOUTUBE PLAYER API */
+    String YOUTUBE_PLAYER_API_KEY = "AIzaSyAgEWM857oL4zredbosxHifLiWMoah09Oc";
+
 }

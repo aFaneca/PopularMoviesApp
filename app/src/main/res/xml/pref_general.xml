@@ -14,4 +14,11 @@
         android:entryValues="@array/pref_sort_order_entry_values"
         android:defaultValue="@string/pref_sort_order_popularity_key"
         />
+    <ListPreference
+        android:key="@string/pref_videos_key"
+        android:title="@string/pref_videos_label"
+        android:entries="@array/pref_videos_entries"
+        android:entryValues="@array/pref_videos_entry_values"
+        android:defaultValue="@string/pref_videos_embedded_key"
+        />
 </PreferenceScreen>

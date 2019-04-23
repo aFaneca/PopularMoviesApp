@@ -37,6 +37,15 @@
     <string name="pref_sort_order_popularity_label">Popularity</string>
     <string name="pref_sort_order_favorites_label">Favorites</string>
 
+    <string name="pref_videos_key" translatable="false">pref_videos_key</string>
+    <string name="pref_videos_label">Video Player</string>
+    <string name="pref_videos_embedded_label">Embedded Player</string>
+    <string name="pref_videos_embedded_key" translatable="false">pref_videos_embedded_key</string>
+    <string name="pref_videos_external_label">External Player</string>
+    <string name="pref_videos_external_key" translatable="false">pref_videos_external_key</string>
+
+
+
 
     <!-- Menu Actions -->
     <string name="action_settings" translatable="false">Settings</string>

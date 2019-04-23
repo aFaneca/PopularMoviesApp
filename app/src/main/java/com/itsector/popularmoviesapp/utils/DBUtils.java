@@ -26,5 +26,11 @@ public class DBUtils implements Constants{
 
         return sortOrder;
     }
+    public static String getVideoPlayerFromSharedPreferences(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String videoPlayer = prefs.getString(VIDEOS_PREF_KEY, VIDEOS_DEFAULT);
+
+        return videoPlayer;
+    }
 
 }

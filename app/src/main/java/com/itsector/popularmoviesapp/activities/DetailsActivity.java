@@ -41,6 +41,7 @@ import com.itsector.popularmoviesapp.models.Review;
 import com.itsector.popularmoviesapp.models.Video;
 import com.itsector.popularmoviesapp.network.MovieSync;
 import com.itsector.popularmoviesapp.utils.Constants;
+import com.itsector.popularmoviesapp.utils.DBUtils;
 import com.itsector.popularmoviesapp.utils.GetMovieCallback;
 import com.itsector.popularmoviesapp.utils.ImageLoader;
 import com.itsector.popularmoviesapp.utils.MovieUtils;
@@ -396,32 +397,43 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(Video video) {
                 if (video.getSite().equals(Constants.YOUTUBE_SITE_LABEL))
-                   /* openYoutubeVideoIntent(video);*/
-                    showVideoPlayerDialog(video);
+                    openVideo(video);
             }
         });
 
         return mMovieVideosAdapter;
     }
 
+    /**
+     * Opens the selected video , according to the users preferences
+     * (either the embedded player or using external app)
+     * @param video
+     */
+    private void openVideo(Video video) {
+        String videoPlayer = DBUtils.getVideoPlayerFromSharedPreferences(this);
+
+        switch(videoPlayer){
+            case Constants.VIDEOS_EMBEDDED:
+                showVideoPlayerDialog(video);
+                break;
+            case Constants.VIDEOS_EXTERNAL:
+                openYoutubeVideoIntent(video);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Displays an alert dialog with the embedded video
+     * @param video
+     */
     private void showVideoPlayerDialog(Video video) {
         DialogFragment dialog = new VideoPlayerDialog();
         ((VideoPlayerDialog) dialog).setVideoID(video.getKey());
         dialog.show(getSupportFragmentManager(), "tag");
 
 
-    }
-
-
-    /**
-     * Opens the review's URL in the web browser through an intent
-     *
-     * @param review
-     */
-    private void openReviewInBrowserIntent(Review review) {
-        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(review.getmURL()));
-
-        startActivity(webIntent);
     }
 
     /**
@@ -440,6 +452,19 @@ public class DetailsActivity extends AppCompatActivity {
             /* If it can't open the app, tries to open through the browser */
             startActivity(ytWebIntent);
         }
+    }
+
+
+
+    /**
+     * Opens the review's URL in the web browser through an intent
+     *
+     * @param review
+     */
+    private void openReviewInBrowserIntent(Review review) {
+        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(review.getmURL()));
+
+        startActivity(webIntent);
     }
 
 

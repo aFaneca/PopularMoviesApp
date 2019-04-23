@@ -58,12 +58,19 @@ public interface Constants {
     }
 
 
-    /* SORT ORDER */
+    /* SORT ORDER PREFS */
     String SORT_ORDER_PREF_KEY = "pref_sort_order_key";
-    String SORT_ORDER_DEFAULT = "pref_sort_order_popularity_key";
     String SORT_ORDER_POPULARITY_DESC = "pref_sort_order_popularity_key";
     String SORT_ORDER_RATING_DESC = "pref_sort_order_rating_key";
     String SORT_ORDER_FAVORITES = "pref_sort_order_favorites_key";
+    String SORT_ORDER_DEFAULT = SORT_ORDER_POPULARITY_DESC;
+
+    /* VIDEO PLAYER PREFS */
+    String VIDEOS_PREF_KEY = "pref_videos_key";
+    String VIDEOS_EMBEDDED = "pref_videos_embedded_key";
+    String VIDEOS_EXTERNAL = "pref_videos_external_key";
+    String VIDEOS_DEFAULT = VIDEOS_EMBEDDED;
+
 
     /* DB */
     String DB_NAME = "movies_db";

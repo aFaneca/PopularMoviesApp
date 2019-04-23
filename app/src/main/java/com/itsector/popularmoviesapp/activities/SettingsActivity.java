@@ -51,6 +51,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         addPreferencesFromResource(R.xml.pref_general);
 
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_sort_order_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_videos_key)));
     }
 
 

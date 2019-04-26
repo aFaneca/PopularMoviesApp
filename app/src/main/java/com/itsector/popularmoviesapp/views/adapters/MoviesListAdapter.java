@@ -22,7 +22,6 @@ import com.itsector.popularmoviesapp.utils.ImageLoader;
 import com.itsector.popularmoviesapp.utils.MovieUtils;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

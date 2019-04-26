@@ -11,7 +11,6 @@ package com.itsector.popularmoviesapp.activities;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -97,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements Constants {
     }
 
     /**
-     * Initializes the search box (editText) & its listener
+     * Initializes the search box (editText) and its listener
      */
     private void setupSearchBox() {
         searchBox_editText = (EditText) findViewById(R.id.search_box_edit_text);
@@ -427,6 +426,4 @@ public class MainActivity extends AppCompatActivity implements Constants {
                 .putExtra(getString(R.string.details_bundle_key), args);
         startActivity(detailsIntent);
     }
-
-
 }
